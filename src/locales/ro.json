@@ -1,0 +1,49 @@
+{
+  "header": {
+    "consultant": "Consultant Lactație",
+    "home": "Acasă",
+    "about": "Despre mine",
+    "howIHelp": "Cum ajut",
+    "services": "Servicii",
+    "faq": "Întrebări",
+    "contact": "Contact",
+    "contactMe": "Contactează-mă",
+    "available": "24/7 disponibil",
+    "bookNow": "Programează-te"
+  },
+  "hero": {
+    "certified": "Consultant certificat în alăptare",
+    "title": "Sprijin profesionist pentru",
+    "titleHighlight": "mame dedicate",
+    "subtitle": "Susținere caldă pentru începutul tău.",
+    "description": "Îți ofer îndrumare sigură, îngrijire adaptată nevoilor tale și susținere emoțională pentru ca tu și bebelușul tău să treceți cu încredere prin fiecare etapă a alăptării.",
+    "bookConsultation": "Programează consultația",
+    "freeEbook": "Ebook gratuit",
+    "mothersHelped": "500+ mame ajutate",
+    "rating": "Rating 4.9/5",
+    "experience": "Experiență 12+ ani",
+    "support": "24/7 support"
+  },
+  "about": {
+    "badge": "Cine sunt eu",
+    "title": "Poveste de",
+    "titleHighlight": "pasiune și dedicare",
+    "subtitle": "De la mamă la consultant certificat",
+    "paragraph1": "Călătoria mea în lumea consultanței în alăptare a început acum peste 5 ani, când am devenit mamă pentru prima dată. Provocările pe care le-am întâmpinat m-au determinat să studiez profund acest domeniu frumos și să ajut alte mame.",
+    "paragraph2": "Am absolvit cursuri internaționale de certificare IBCLC și am lucrat cu peste 500 de familii, fiecare cu povestea ei unică. Pasiunea mea este să ofer suport personalizat, adaptat nevoilor fiecărei mame și bebeluș.",
+    "paragraph3": "Cred cu tărie că fiecare mamă merită să fie ascultată, înțeleasă și susținută în această călătorie minunată. Sunt aici pentru tine, cu empatie, experiență și soluții practice.",
+    "credentials": {
+      "title": "Credențiale și specializări",
+      "cert1": "Consultant IBCLC Certificat Internațional",
+      "cert2": "Specialist în Lactație WHO/UNICEF",
+      "cert3": "Curs avansat în Probleme Complexe de Alăptare",
+      "cert4": "Formare în Suport Emoțional pentru Mame"
+    },
+    "stats": {
+      "families": "Familii ajutate",
+      "years": "Ani experiență",
+      "satisfaction": "Satisfacție clienți",
+      "available": "Disponibilitate"
+    }
+  }
+}

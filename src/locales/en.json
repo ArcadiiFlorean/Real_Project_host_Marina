@@ -1,0 +1,49 @@
+{
+  "header": {
+    "consultant": "Lactation Consultant",
+    "home": "Home",
+    "about": "About me",
+    "howIHelp": "How I help",
+    "services": "Services",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "contactMe": "Contact me",
+    "available": "24/7 available",
+    "bookNow": "Book now"
+  },
+  "hero": {
+    "certified": "Certified lactation consultant",
+    "title": "Professional support for",
+    "titleHighlight": "dedicated mothers",
+    "subtitle": "Warm support for your beginning.",
+    "description": "I offer you safe guidance, care adapted to your needs and emotional support so that you and your baby can go through each stage of breastfeeding with confidence.",
+    "bookConsultation": "Book consultation",
+    "freeEbook": "Free ebook",
+    "mothersHelped": "500+ mothers helped",
+    "rating": "Rating 4.9/5",
+    "experience": "12+ years experience",
+    "support": "24/7 support"
+  },
+  "about": {
+    "badge": "Who I am",
+    "title": "A story of",
+    "titleHighlight": "passion and dedication",
+    "subtitle": "From mother to certified consultant",
+    "paragraph1": "My journey into lactation consulting began over 5 years ago when I became a mother for the first time. The challenges I faced motivated me to study this beautiful field deeply and help other mothers.",
+    "paragraph2": "I completed international IBCLC certification courses and have worked with over 500 families, each with their unique story. My passion is to provide personalized support, adapted to the needs of each mother and baby.",
+    "paragraph3": "I firmly believe that every mother deserves to be heard, understood, and supported on this wonderful journey. I am here for you, with empathy, experience, and practical solutions.",
+    "credentials": {
+      "title": "Credentials and specializations",
+      "cert1": "Internationally Certified IBCLC Consultant",
+      "cert2": "WHO/UNICEF Lactation Specialist",
+      "cert3": "Advanced Course in Complex Breastfeeding Issues",
+      "cert4": "Training in Emotional Support for Mothers"
+    },
+    "stats": {
+      "families": "Families helped",
+      "years": "Years experience",
+      "satisfaction": "Client satisfaction",
+      "available": "Availability"
+    }
+  }
+}
