@@ -45,5 +45,199 @@
       "satisfaction": "Client satisfaction",
       "available": "Availability"
     }
+  },
+  "services": {
+    "badge": "Consultation Packages",
+    "title": "Choose the right package",
+    "titleHighlight": "for you and your baby",
+    "subtitle": "Personalized consultations with dedicated support for a peaceful experience",
+    "bookNow": "Book now",
+    "noServices": "No packages available at the moment",
+    "minutes": "minutes video consultation",
+    "included": "What's included:",
+    "oneTimePayment": "One-time payment, no subscription",
+    "popular": "Popular"
+  },
+  "footer": {
+    "brandName": "Lactation Consultant",
+    "tagline": "Support for modern mothers",
+    "description": "We offer personalized consultations and dedicated support for mothers who want to give their babies the best start.",
+    "quickLinks": "Quick Links",
+    "home": "Home",
+    "about": "About Me",
+    "services": "Services",
+    "contact": "Contact",
+    "ourServices": "Our Services",
+    "consultation": "Personalized consultations",
+    "support": "Continuous support",
+    "education": "Education and resources",
+    "workshops": "Workshops and courses",
+    "contactInfo": "Contact",
+    "address": "Bucharest, Romania",
+    "hours": "Monday - Friday: 9:00 AM - 6:00 PM",
+    "rights": "All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms and Conditions",
+    "cookies": "Cookie Policy"
+  },
+  "contact": {
+    "badge": "Get in touch",
+    "title": "Let's talk about",
+    "titleHighlight": "your journey",
+    "subtitle": "I'm here to help! Contact me for a personalized consultation or any questions you may have.",
+    "formTitle": "Send me a message",
+    "name": "Full name",
+    "namePlaceholder": "Your name",
+    "email": "Email",
+    "emailPlaceholder": "example@email.com",
+    "phone": "Phone",
+    "phonePlaceholder": "+40 123 456 789",
+    "subject": "Subject",
+    "subjectPlaceholder": "What would you like to talk about?",
+    "message": "Message",
+    "messagePlaceholder": "Write your message here...",
+    "send": "Send message",
+    "sending": "Sending...",
+    "successMessage": "Your message has been sent successfully! I will get back to you soon.",
+    "infoTitle": "Contact information",
+    "phoneLabel": "Phone",
+    "emailLabel": "Email",
+    "locationLabel": "Location",
+    "hoursLabel": "Hours",
+    "hours": "Monday - Friday: 9:00 AM - 6:00 PM",
+    "socialTitle": "Follow me",
+    "quickResponse": "Quick Response",
+    "quickResponseText": "I usually respond within 24 hours"
+  },
+  "header": {
+    "consultant": "Lactation Consultant",
+    "home": "Home",
+    "about": "About Me",
+    "howIHelp": "How I Help",
+    "services": "Services",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "contactMe": "Contact me",
+    "available": "24/7 Available",
+    "bookNow": "Book now",
+    "language": "Language",
+    "followUs": "Follow us"
+  },
+  "policies": {
+    "privacy": {
+      "title": "Privacy Policy",
+      "section1Title": "1. General Information",
+      "section1Content": "Marina Cociug - Lactation Consultant is committed to protecting your personal data privacy. This policy explains what data we collect, how we use it, and your rights under the General Data Protection Regulation (GDPR).",
+      "section2Title": "2. What Data We Collect",
+      "section2Content": "We collect the following information: full name, email address, phone number, pregnancy and birth information, baby's age, breastfeeding history, current concerns, and goals. This data is necessary to provide personalized consultations and appropriate support.",
+      "section3Title": "3. How We Use Your Data",
+      "section3Content": "Data is used exclusively for: scheduling and conducting consultations, communicating with you via email or phone, maintaining consultation records for continuity, improving our services, and sending educational materials (only with your explicit consent).",
+      "section4Title": "4. Data Sharing",
+      "section4Content": "We do not sell, rent, or share your data with third parties for marketing purposes. Data may only be shared with: video conferencing platforms (for online consultations), payment processors (for secure transactions), and hosting service providers (who comply with GDPR).",
+      "section5Title": "5. Data Security",
+      "section5Content": "We take technical and organizational measures to protect data: encrypted SSL/TLS connections, restricted access through authentication, regular backups, compliance with GDPR protocols, and ongoing staff training in data protection.",
+      "section6Title": "6. Your Rights",
+      "section6Content": "Under GDPR, you have the following rights: access to personal data, rectification of incorrect data, erasure of data ('right to be forgotten'), restriction of processing, data portability, and right to object to processing. To exercise these rights, contact us at info@marinacociug.ro.",
+      "section7Title": "7. Data Retention",
+      "section7Content": "We retain your data for: duration of our collaboration plus 3 years (for medical records), 7 years for tax and accounting documents, or until consent withdrawal (for marketing materials).",
+      "section8Title": "8. Cookies and Similar Technologies",
+      "section8Content": "Our website uses cookies to improve user experience. For more details, see our Cookie Policy.",
+      "section9Title": "9. Contact",
+      "section9Content": "For privacy-related questions, contact us: Email: info@marinacociug.ro, Phone: +40 123 456 789, Address: Bucharest, Romania"
+    },
+    "terms": {
+      "title": "Terms and Conditions",
+      "section1Title": "1. Acceptance of Terms",
+      "section1Content": "By accessing and using Marina Cociug - Lactation Consultant services, you agree to these terms and conditions. If you do not agree, please do not use our services.",
+      "section2Title": "2. Services Offered",
+      "section2Content": "We offer the following services: personalized lactation consultations (online or home visits), continuous support via WhatsApp/email between consultations, personalized breastfeeding plans, assessment and resolution of breastfeeding issues, education and resources for parents. Consultations are tailored to the individual needs of each mother and baby.",
+      "section3Title": "3. Appointments and Bookings",
+      "section3Content": "Appointments are made: online through website or by phone/WhatsApp at +40 123 456 789. Appointment confirmation via email or SMS. Online consultations require stable internet connection and Zoom/Skype app installed. For home visits, please ensure a quiet and comfortable space.",
+      "section4Title": "4. Cancellation Policy",
+      "section4Content": "Cancellations more than 48h before: 100% refund or free rescheduling. Cancellations 24-48h before: 50% cancellation fee or rescheduling with 25% fee. Cancellations less than 24h before: no refund, rescheduling with 50% fee. In case of medical emergency (mother or baby), free rescheduling offered with medical documentation.",
+      "section5Title": "5. Payments and Fees",
+      "section5Content": "Payments accepted via: online bank card (Stripe), bank transfer, cash (for home visits). Fees are clearly displayed on website and include VAT. Payment is made before consultation. Invoice issued for all services.",
+      "section6Title": "6. Confidentiality and Professional Ethics",
+      "section6Content": "All information discussed during consultations is strictly confidential. We respect the IBCLC Lactation Consultant Code of Ethics. We do not share information without your explicit consent, except in cases required by law.",
+      "section7Title": "7. Limitations of Liability",
+      "section7Content": "Our consultation services do not replace medical advice. In case of severe medical problems (high fever, infections, health issues), we recommend consulting a doctor. We do not guarantee specific results, as each situation is unique. We provide support, education, and guidance based on scientific evidence and practical experience.",
+      "section8Title": "8. Intellectual Property",
+      "section8Content": "All content on the site (texts, images, educational materials, guides) is the property of Marina Cociug and is protected by copyright laws. Copying, distribution, or commercial use without written permission is not allowed.",
+      "section9Title": "9. Changes to Terms",
+      "section9Content": "We reserve the right to modify these terms. Changes will be communicated via email or on the site. Continued use of services after changes constitutes acceptance of new terms.",
+      "section10Title": "10. Applicable Law",
+      "section10Content": "These terms are governed by Romanian law. Any dispute will be resolved by competent courts in Bucharest.",
+      "section11Title": "11. Contact",
+      "section11Content": "For questions about these terms, contact us: Email: info@marinacociug.ro, Phone: +40 123 456 789"
+    },
+    "cookies": {
+      "title": "Cookie Policy",
+      "section1Title": "1. What Are Cookies?",
+      "section1Content": "Cookies are small text files stored on your device (computer, phone, tablet) when you visit a website. They help the site function properly and provide a personalized experience.",
+      "section2Title": "2. Types of Cookies We Use",
+      "section2Content": "Essential Cookies (necessary): Ensure basic site functionality, authentication, shopping cart, security. These cannot be disabled. Performance Cookies: Collect information about how you use the site (pages visited, time spent, errors). Help us improve the site. Functional Cookies: Remember preferences (language, font size, region). Marketing Cookies (with consent only): Track activity for personalized ads on other sites.",
+      "section3Title": "3. Third-Party Cookies",
+      "section3Content": "We use external services that may set cookies: Google Analytics (traffic analysis), Stripe (payment processing), Zoom/Skype (video consultations), Meta Pixel (for Facebook/Instagram ads, with consent only). These services have their own privacy policies.",
+      "section4Title": "4. Cookie Duration",
+      "section4Content": "Session cookies: Automatically deleted when you close browser. Persistent cookies: Remain on device for specified period (from days to 2 years), depending on type.",
+      "section5Title": "5. How to Manage Cookies",
+      "section5Content": "You can control and delete cookies through: Browser settings (Chrome, Firefox, Safari, Edge - each has options in Settings > Privacy). Cookie consent panel on our site (at first visit). Browser tools for blocking cookies. Note: Disabling essential cookies may affect site functionality (unable to make appointments, unable to access account).",
+      "section6Title": "6. Detailed Cookie List",
+      "section6Content": "Cookies we use: session_id (essential, 24 hours) - maintains authentication session; _ga (Google Analytics, 2 years) - unique visitor identifier; _gid (Google Analytics, 24 hours) - user behavior analysis; lang_pref (functional, 1 year) - remembers preferred language; consent_status (essential, 1 year) - stores cookie preferences.",
+      "section7Title": "7. Policy Updates",
+      "section7Content": "This policy may be updated periodically to reflect changes in technology or legislation. Last updated: December 2024.",
+      "section8Title": "8. Contact",
+      "section8Content": "For questions about cookies, contact us: Email: info@marinacociug.ro, Phone: +40 123 456 789"
+    }
+  },
+  "videos": {
+    "badge": "Educational Videos",
+    "title": "Learn the Right Techniques",
+    "titleHighlight": "through Video Tutorials",
+    "subtitle": "Step-by-step video tutorials to help you master breastfeeding techniques",
+    "noVideos": "No videos in this category yet.",
+    "categories": {
+      "all": "All",
+      "positions": "Positions",
+      "latch": "Latch",
+      "massage": "Massage",
+      "problems": "Problems",
+      "pumping": "Pumping",
+      "care": "Care"
+    },
+    "list": {
+      "cradle": {
+        "title": "Cradle Position - Classic Technique",
+        "description": "The most popular breastfeeding position. Perfect for babies of all ages."
+      },
+      "football": {
+        "title": "Football Hold - For Twins",
+        "description": "Ideal for moms with twins or after cesarean. Offers excellent control."
+      },
+      "sidelying": {
+        "title": "Side-Lying Position - For Night",
+        "description": "Perfect for nighttime breastfeeding. Allows mom to rest."
+      },
+      "latchTechnique": {
+        "title": "Correct Latch Technique",
+        "description": "Essential steps for a deep and comfortable latch."
+      },
+      "breastMassage": {
+        "title": "Massage for Lactation Stimulation",
+        "description": "Massage techniques to naturally increase milk production."
+      },
+      "soreness": {
+        "title": "Resolving Sore Nipples",
+        "description": "Causes, prevention, and treatment for maternal discomfort."
+      },
+      "handExpression": {
+        "title": "Hand Expression of Milk",
+        "description": "Marmet Technique - the most efficient manual expression method."
+      },
+      "nippleCare": {
+        "title": "Breast and Nipple Care",
+        "description": "Daily care routine to prevent problems."
+      }
+    }
   }
 }

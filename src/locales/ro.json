@@ -45,5 +45,199 @@
       "satisfaction": "Satisfacție clienți",
       "available": "Disponibilitate"
     }
+  },
+  "services": {
+    "badge": "Pachete de Consultație",
+    "title": "Alege pachetul potrivit",
+    "titleHighlight": "pentru tine și bebelușul tău",
+    "subtitle": "Consultații personalizate cu suport dedicat pentru o experiență liniștită",
+    "bookNow": "Rezervă acum",
+    "noServices": "Nu există pachete disponibile momentan",
+    "minutes": "minute consultație video",
+    "included": "Ce include:",
+    "oneTimePayment": "Plată unică, fără abonament",
+    "popular": "Popular"
+  },
+  "footer": {
+    "brandName": "Consultant Alăptare",
+    "tagline": "Suport pentru mame moderne",
+    "description": "Oferim consultații personalizate și suport dedicat pentru mamele care doresc să ofere cel mai bun început bebelușilor lor.",
+    "quickLinks": "Link-uri Rapide",
+    "home": "Acasă",
+    "about": "Despre Mine",
+    "services": "Servicii",
+    "contact": "Contact",
+    "ourServices": "Serviciile Noastre",
+    "consultation": "Consultații personalizate",
+    "support": "Suport continuu",
+    "education": "Educație și resurse",
+    "workshops": "Workshop-uri și cursuri",
+    "contactInfo": "Contact",
+    "address": "București, România",
+    "hours": "Luni - Vineri: 9:00 - 18:00",
+    "rights": "Toate drepturile rezervate.",
+    "privacy": "Politica de Confidențialitate",
+    "terms": "Termeni și Condiții",
+    "cookies": "Politica Cookies"
+  },
+  "contact": {
+    "badge": "Ia legătura",
+    "title": "Hai să vorbim",
+    "titleHighlight": "despre călătoria ta",
+    "subtitle": "Sunt aici să te ajut! Contactează-mă pentru o consultație personalizată sau orice întrebări ai avea.",
+    "formTitle": "Trimite-mi un mesaj",
+    "name": "Nume complet",
+    "namePlaceholder": "Numele tău",
+    "email": "Email",
+    "emailPlaceholder": "exemplu@email.com",
+    "phone": "Telefon",
+    "phonePlaceholder": "+40 123 456 789",
+    "subject": "Subiect",
+    "subjectPlaceholder": "Despre ce vrei să vorbim?",
+    "message": "Mesaj",
+    "messagePlaceholder": "Scrie-mi mesajul tău aici...",
+    "send": "Trimite mesajul",
+    "sending": "Se trimite...",
+    "successMessage": "Mesajul tău a fost trimis cu succes! Îți voi răspunde în curând.",
+    "infoTitle": "Informații de contact",
+    "phoneLabel": "Telefon",
+    "emailLabel": "Email",
+    "locationLabel": "Locație",
+    "hoursLabel": "Program",
+    "hours": "Luni - Vineri: 9:00 - 18:00",
+    "socialTitle": "Urmărește-mă",
+    "quickResponse": "Răspuns Rapid",
+    "quickResponseText": "Răspund de obicei în 24 de ore"
+  },
+  "header": {
+    "consultant": "Consultant în Alăptare",
+    "home": "Acasă",
+    "about": "Despre Mine",
+    "howIHelp": "Cum te Ajut",
+    "services": "Servicii",
+    "faq": "Întrebări",
+    "contact": "Contact",
+    "contactMe": "Contactează-mă",
+    "available": "24/7 Disponibil",
+    "bookNow": "Programează acum",
+    "language": "Limbă",
+    "followUs": "Urmărește-ne"
+  },
+  "policies": {
+    "privacy": {
+      "title": "Politica de Confidențialitate",
+      "section1Title": "1. Informații Generale",
+      "section1Content": "Marina Cociug - Consultant în Alăptare se angajează să protejeze confidențialitatea datelor dumneavoastră personale. Această politică explică ce date colectăm, cum le folosim și care sunt drepturile dumneavoastră conform Regulamentului General privind Protecția Datelor (GDPR).",
+      "section2Title": "2. Ce Date Colectăm",
+      "section2Content": "Colectăm următoarele informații: nume și prenume, adresă de email, număr de telefon, informații despre sarcină și naștere, vârsta bebelușului, istoricul alăptării, probleme actuale și obiective. Aceste date sunt necesare pentru a vă oferi consultanță personalizată și suport adecvat.",
+      "section3Title": "3. Cum Folosim Datele",
+      "section3Content": "Datele sunt utilizate exclusiv pentru: programarea și desfășurarea consultațiilor, comunicarea cu dumneavoastră prin email sau telefon, păstrarea evidenței consultațiilor pentru continuitate, îmbunătățirea serviciilor noastre și trimiterea de materiale educaționale (doar cu acordul dumneavoastră explicit).",
+      "section4Title": "4. Partajarea Datelor",
+      "section4Content": "Nu vindem, nu închiriem și nu partajăm datele dumneavoastră cu terțe părți în scopuri de marketing. Datele pot fi partajate doar cu: platforme de video-conferință (pentru consultații online), procesatori de plăți (pentru tranzacții securizate) și furnizorii de servicii de hosting (care respectă GDPR).",
+      "section5Title": "5. Securitatea Datelor",
+      "section5Content": "Luăm măsuri tehnice și organizatorice pentru protejarea datelor: conexiuni criptate SSL/TLS, acces restricționat prin autentificare, backup-uri regulate, respectarea protocoalelor GDPR și formarea continuă a personalului în protecția datelor.",
+      "section6Title": "6. Drepturile Dumneavoastră",
+      "section6Content": "Conform GDPR, aveți următoarele drepturi: accesul la datele personale, rectificarea datelor incorecte, ștergerea datelor ('dreptul de a fi uitat'), restricționarea prelucrării, portabilitatea datelor și dreptul de a vă opune prelucrării. Pentru exercitarea acestor drepturi, contactați-ne la info@marinacociug.ro.",
+      "section7Title": "7. Păstrarea Datelor",
+      "section7Content": "Păstrăm datele dumneavoastră pentru: durata colaborării noastre plus 3 ani (pentru evidențe medicale), 7 ani pentru documente fiscale și contabile sau până la retragerea consimțământului (pentru materiale de marketing).",
+      "section8Title": "8. Cookies și Tehnologii Similare",
+      "section8Content": "Site-ul nostru folosește cookies pentru a îmbunătăți experiența utilizatorului. Pentru mai multe detalii, consultați Politica de Cookies.",
+      "section9Title": "9. Contact",
+      "section9Content": "Pentru întrebări legate de confidențialitate, contactați-ne: Email: info@marinacociug.ro, Telefon: +40 123 456 789, Adresă: București, România"
+    },
+    "terms": {
+      "title": "Termeni și Condiții",
+      "section1Title": "1. Acceptarea Termenilor",
+      "section1Content": "Prin accesarea și utilizarea serviciilor Marina Cociug - Consultant în Alăptare, sunteți de acord cu acești termeni și condiții. Dacă nu sunteți de acord, vă rugăm să nu utilizați serviciile noastre.",
+      "section2Title": "2. Serviciile Oferite",
+      "section2Content": "Oferim următoarele servicii: consultații personalizate în alăptare (online sau la domiciliu), suport continuu prin WhatsApp/email între consultații, planuri personalizate de alăptare, evaluarea și rezolvarea problemelor de alăptare, educație și resurse pentru părinți. Consultațiile sunt adaptate nevoilor individuale ale fiecărei mame și bebeluș.",
+      "section3Title": "3. Programări și Rezervări",
+      "section3Content": "Programările se fac: online prin site sau telefonic/WhatsApp la +40 123 456 789. Confirmarea programării se face prin email sau SMS. Consultațiile online necesită o conexiune stabilă la internet și aplicația Zoom/Skype instalată. Pentru consultații la domiciliu, vă rugăm să asigurați un spațiu liniștit și confortabil.",
+      "section4Title": "4. Politica de Anulare",
+      "section4Content": "Anulări cu mai mult de 48h înainte: rambursare 100% sau reprogramare gratuită. Anulări între 24-48h înainte: taxă de anulare 50% sau reprogramare cu taxă de 25%. Anulări cu mai puțin de 24h înainte: fără rambursare, reprogramare cu taxă de 50%. În caz de urgență medicală (mama sau bebeluș), se oferă reprogramare gratuită cu document medical justificativ.",
+      "section5Title": "5. Plăți și Tarife",
+      "section5Content": "Plățile se acceptă prin: card bancar online (Stripe), transfer bancar, numerar (pentru consultații la domiciliu). Tarifele sunt afișate clar pe site și includ TVA. Plata se efectuează înainte de consultație. Factură fiscală se emite pentru toate serviciile.",
+      "section6Title": "6. Confidențialitate și Etică Profesională",
+      "section6Content": "Toate informațiile discutate în timpul consultațiilor sunt strict confidențiale. Respectăm Codul Etic al Consultanților în Lactație IBCLC. Nu împărtășim informații fără consimțământul dumneavoastră explicit, cu excepția cazurilor impuse de lege.",
+      "section7Title": "7. Limitări de Responsabilitate",
+      "section7Content": "Serviciile noastre de consultanță nu înlocuiesc consilierea medicală. În cazul problemelor medicale severe (febră înaltă, infecții, probleme de sănătate), recomandăm consultarea unui medic. Nu garantăm rezultate specifice, deoarece fiecare situație este unică. Oferim suport, educație și ghidare bazate pe dovezi științifice și experiență practică.",
+      "section8Title": "8. Proprietate Intelectuală",
+      "section8Content": "Tot conținutul de pe site (texte, imagini, materiale educaționale, ghiduri) este proprietatea Marina Cociug și este protejat de legile drepturilor de autor. Nu este permisă copierea, distribuirea sau folosirea comercială fără acordul scris.",
+      "section9Title": "9. Modificări ale Termenilor",
+      "section9Content": "Ne rezervăm dreptul de a modifica acești termeni. Modificările vor fi comunicate prin email sau pe site. Continuarea utilizării serviciilor după modificări constituie acceptarea noilor termeni.",
+      "section10Title": "10. Legislație Aplicabilă",
+      "section10Content": "Acești termeni sunt guvernați de legile României. Orice dispută va fi rezolvată de instanțele competente din București.",
+      "section11Title": "11. Contact",
+      "section11Content": "Pentru întrebări despre acești termeni, contactați-ne: Email: info@marinacociug.ro, Telefon: +40 123 456 789"
+    },
+    "cookies": {
+      "title": "Politica de Cookies",
+      "section1Title": "1. Ce Sunt Cookies?",
+      "section1Content": "Cookies sunt fișiere text mici stocate pe dispozitivul dumneavoastră (computer, telefon, tabletă) când vizitați un site web. Ele ajută site-ul să funcționeze corect și să vă ofere o experiență personalizată.",
+      "section2Title": "2. Ce Tipuri de Cookies Folosim",
+      "section2Content": "Cookies Esențiale (necesare): Asigură funcționarea de bază a site-ului, autentificare, coș de cumpărături, securitate. Acestea nu pot fi dezactivate. Cookies de Performanță: Colectează informații despre cum folosiți site-ul (pagini vizitate, timp petrecut, erori). Ne ajută să îmbunătățim site-ul. Cookies Funcționale: Memorează preferințele (limba, dimensiunea fontului, regiunea). Cookies de Marketing (doar cu consimțământ): Urmăresc activitatea pentru reclame personalizate pe alte site-uri.",
+      "section3Title": "3. Cookies de la Terțe Părți",
+      "section3Content": "Folosim servicii externe care pot seta cookies: Google Analytics (analiză trafic), Stripe (procesare plăți), Zoom/Skype (consultații video), Meta Pixel (pentru reclame pe Facebook/Instagram, doar cu consimțământ). Aceste servicii au propriile politici de confidențialitate.",
+      "section4Title": "4. Durata Cookies",
+      "section4Content": "Cookies de sesiune: Se șterg automat când închideți browser-ul. Cookies persistente: Rămân pe dispozitiv pentru o perioadă specificată (de la câteva zile la 2 ani), în funcție de tip.",
+      "section5Title": "5. Cum Gestionați Cookies",
+      "section5Content": "Puteți controla și șterge cookies prin: Setările browser-ului (Chrome, Firefox, Safari, Edge - fiecare are opțiuni în Setări > Confidențialitate). Panoul de consimțământ cookies de pe site-ul nostru (la prima vizită). Instrumente de browser pentru blocarea cookies. Atenție: Dezactivarea cookies esențiale poate afecta funcționalitatea site-ului (nu veți putea face programări, nu veți putea accesa contul).",
+      "section6Title": "6. Lista Detaliată de Cookies",
+      "section6Content": "Cookie-uri pe care le folosim: session_id (esențial, 24 ore) - menține sesiunea de autentificare; _ga (Google Analytics, 2 ani) - identificator unic vizitator; _gid (Google Analytics, 24 ore) - analiză comportament utilizator; lang_pref (funcțional, 1 an) - memorează limba preferată; consent_status (esențial, 1 an) - stochează preferințele cookies.",
+      "section7Title": "7. Actualizări Politică",
+      "section7Content": "Această politică poate fi actualizată periodic pentru a reflecta schimbări în tehnologie sau legislație. Data ultimei actualizări: Decembrie 2024.",
+      "section8Title": "8. Contact",
+      "section8Content": "Pentru întrebări despre cookies, contactați-ne: Email: info@marinacociug.ro, Telefon: +40 123 456 789"
+    }
+  },
+  "videos": {
+    "badge": "Videoclipuri Educaționale",
+    "title": "Învață Tehnicile Corecte",
+    "titleHighlight": "prin Video Practici",
+    "subtitle": "Tutoriale video pas-cu-pas pentru a te ajuta să stăpânești tehnicile de alăptare",
+    "noVideos": "Nu există videoclipuri în această categorie încă.",
+    "categories": {
+      "all": "Toate",
+      "positions": "Poziții",
+      "latch": "Atașare",
+      "massage": "Masaj",
+      "problems": "Probleme",
+      "pumping": "Extragere",
+      "care": "Îngrijire"
+    },
+    "list": {
+      "cradle": {
+        "title": "Poziția Leagăn - Tehnica Clasică",
+        "description": "Cea mai populară poziție pentru alăptare. Perfectă pentru bebeluși de toate vârstele."
+      },
+      "football": {
+        "title": "Poziția Fotbal - Pentru Gemeni",
+        "description": "Ideală pentru mame cu gemeni sau după cezariană. Oferă control excelent."
+      },
+      "sidelying": {
+        "title": "Poziția Culcat Lateral - Pentru Noapte",
+        "description": "Perfectă pentru alăptarea de noapte. Permite mamei să se odihnească."
+      },
+      "latchTechnique": {
+        "title": "Tehnica Corectă de Atașare",
+        "description": "Pașii esențiali pentru o atașare profundă și confortabilă."
+      },
+      "breastMassage": {
+        "title": "Masaj pentru Stimularea Lactației",
+        "description": "Tehnici de masaj pentru a crește producția de lapte natural."
+      },
+      "soreness": {
+        "title": "Rezolvarea Mameloanelor Dureroase",
+        "description": "Cauze, prevenire și tratament pentru disconfortul mamelor."
+      },
+      "handExpression": {
+        "title": "Extragerea Manuală a Laptelui",
+        "description": "Tehnica Marmet - cea mai eficientă metodă de extragere manuală."
+      },
+      "nippleCare": {
+        "title": "Îngrijirea Sânilor și Mameloanelor",
+        "description": "Rutina zilnică de îngrijire pentru prevenirea problemelor."
+      }
+    }
   }
 }
