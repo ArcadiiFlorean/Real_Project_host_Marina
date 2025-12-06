@@ -247,21 +247,7 @@ function AdminDashboard({ user, onLogout }) {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b sticky top-0 z-50">
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-800">💝 Admin Dashboard - Pachete Consultație</h1>
-            <p className="text-sm text-gray-600">Bine ai venit, {user.email}</p>
-          </div>
-          <button
-            onClick={onLogout}
-            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-          >
-            Logout →
-          </button>
-        </div>
-      </header>
+
 
       <div className="container mx-auto px-6 py-8">
         {/* Action Button */}

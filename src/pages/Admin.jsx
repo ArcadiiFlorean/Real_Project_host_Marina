@@ -3,11 +3,12 @@ import { supabase } from '../lib/supabase';
 import AdminLogin from '../components/AdminLogin';
 import AdminDashboard from '../components/AdminDashboard';
 import AdminVideos from '../components/AdminVideos';
+import AdminOrders from './AdminOrders';
 
 function Admin() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('packages'); // ← ADĂUGAT
+  const [activeTab, setActiveTab] = useState('packages');
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -39,10 +40,8 @@ function Admin() {
     return <AdminLogin onLoginSuccess={setUser} />;
   }
 
-  // ← DE AICI ÎNCEPE NOUL COD
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header cu Logout */}
       <div className="bg-white shadow-md sticky top-0 z-50">
         <div className="container mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
@@ -57,7 +56,7 @@ function Admin() {
             </div>
             <div className="flex items-center gap-4">
               
-              <a  href="/"
+               <a href="/"
                 className="px-4 py-2 text-gray-600 hover:text-pink-600 transition-colors"
               >
                 🏠 Acasă
@@ -73,7 +72,6 @@ function Admin() {
         </div>
       </div>
 
-      {/* Tab-uri pentru Pachete și Videoclipuri */}
       <div className="container mx-auto px-6 py-8">
         <div className="flex gap-4 mb-8 flex-wrap">
           <button
@@ -86,6 +84,18 @@ function Admin() {
           >
             📦 Pachete Consultații
           </button>
+          
+          <button
+            onClick={() => setActiveTab('orders')}
+            className={`px-6 py-3 rounded-lg font-medium transition-all transform hover:scale-105 ${
+              activeTab === 'orders'
+                ? 'bg-gradient-to-r from-pink-500 to-orange-500 text-white shadow-lg'
+                : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+            }`}
+          >
+            💰 Comenzi & Plăți
+          </button>
+
           <button
             onClick={() => setActiveTab('videos')}
             className={`px-6 py-3 rounded-lg font-medium transition-all transform hover:scale-105 ${
@@ -98,11 +108,15 @@ function Admin() {
           </button>
         </div>
 
-        {/* Conținut bazat pe tab-ul activ */}
         <div className="bg-white rounded-xl shadow-lg p-6">
           {activeTab === 'packages' && (
             <AdminDashboard user={user} onLogout={handleLogout} />
           )}
+          
+          {activeTab === 'orders' && (
+            <AdminOrders />
+          )}
+
           {activeTab === 'videos' && (
             <AdminVideos />
           )}

@@ -1,7 +1,8 @@
-import { useTranslation } from 'react-i18next';
-import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
-import { motion } from 'framer-motion';
+import { useTranslation } from "react-i18next";
+import { useState, useEffect } from "react";
+import { supabase } from "../lib/supabase";
+import { motion } from "framer-motion";
+import { createCheckoutSession } from "../lib/stripe";
 
 function Services() {
   const { t, i18n } = useTranslation();
@@ -15,14 +16,14 @@ function Services() {
   const fetchPackages = async () => {
     try {
       const { data, error } = await supabase
-        .from('consultation_packages')
-        .select('*')
-        .order('order_index', { ascending: true });
+        .from("consultation_packages")
+        .select("*")
+        .order("order_index", { ascending: true });
 
       if (error) throw error;
       setPackages(data || []);
     } catch (error) {
-      console.error('Error fetching packages:', error);
+      console.error("Error fetching packages:", error);
     } finally {
       setLoading(false);
     }
@@ -33,9 +34,20 @@ function Services() {
     return pkg[`${field}_${lang}`] || pkg[`${field}_ro`];
   };
 
-  const handleBooking = (pkg) => {
-    alert(`${t('services.bookNow')}: ${getLocalizedContent(pkg, 'name')} - ${pkg.price}€`);
-    // TODO: Redirect către Stripe Checkout
+  const handleBooking = async (pkg) => {
+    try {
+      const packageData = {
+        id: pkg.id,
+        name: getLocalizedContent(pkg, "name"),
+        description: getLocalizedContent(pkg, "description"),
+        price: pkg.price,
+      };
+
+      await createCheckoutSession(packageData);
+    } catch (error) {
+      console.error("Error:", error);
+      alert("A apărut o eroare. Te rugăm să încerci din nou.");
+    }
   };
 
   const containerVariants = {
@@ -44,9 +56,9 @@ function Services() {
       opacity: 1,
       transition: {
         staggerChildren: 0.15,
-        delayChildren: 0.2
-      }
-    }
+        delayChildren: 0.2,
+      },
+    },
   };
 
   const cardVariants = {
@@ -56,9 +68,9 @@ function Services() {
       y: 0,
       transition: {
         duration: 0.6,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   const headerVariants = {
@@ -66,8 +78,8 @@ function Services() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
-    }
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
   };
 
   if (loading) {
@@ -85,7 +97,10 @@ function Services() {
   }
 
   return (
-    <section id="servicii" className="relative py-12 bg-gradient-to-b from-white to-pink-50 overflow-hidden">
+    <section
+      id="servicii"
+      className="relative py-12 bg-gradient-to-b from-white to-pink-50 overflow-hidden"
+    >
       {/* Decorative Circles - mai mici */}
       <div className="absolute top-10 right-10 w-48 h-48 bg-pink-200 rounded-full blur-3xl opacity-20" />
       <div className="absolute bottom-10 left-10 w-56 h-56 bg-orange-200 rounded-full blur-3xl opacity-20" />
@@ -107,18 +122,21 @@ function Services() {
             className="inline-flex items-center gap-2 bg-white backdrop-blur px-3 py-1.5 rounded-full shadow-md mb-3"
           >
             <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
-            <span className="text-xs text-gray-700">💝 {t('services.badge')}</span>
+            <span className="text-xs text-gray-700">
+              💝 {t("services.badge")}
+            </span>
           </motion.div>
-          
+
           <h2 className="text-3xl lg:text-4xl font-bold text-[#8B4513] leading-tight mb-3">
-            {t('services.title')}<br />
+            {t("services.title")}
+            <br />
             <span className="bg-gradient-to-r from-pink-600 to-orange-600 bg-clip-text text-transparent">
-              {t('services.titleHighlight')}
+              {t("services.titleHighlight")}
             </span>
           </h2>
-          
+
           <p className="text-base text-gray-600 max-w-2xl mx-auto">
-            {t('services.subtitle')}
+            {t("services.subtitle")}
           </p>
         </motion.div>
 
@@ -136,7 +154,7 @@ function Services() {
               variants={cardVariants}
               whileHover={{ y: -8, scale: pkg.is_popular ? 1.02 : 1.03 }}
               className={`relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden group ${
-                pkg.is_popular ? 'border-2 border-pink-400' : ''
+                pkg.is_popular ? "border-2 border-pink-400" : ""
               }`}
             >
               {/* Popular Badge - mai mic */}
@@ -148,7 +166,7 @@ function Services() {
                   transition={{ duration: 0.5, delay: 0.3, type: "spring" }}
                   className="absolute top-3 right-3 bg-gradient-to-r from-pink-500 to-orange-500 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-lg z-10"
                 >
-                  ⭐ {t('services.popular')}
+                  ⭐ {t("services.popular")}
                 </motion.div>
               )}
 
@@ -176,27 +194,29 @@ function Services() {
                   transition={{ duration: 0.2 }}
                   className="text-xl font-bold text-gray-800 mb-2 group-hover:text-pink-600 transition-colors"
                 >
-                  {getLocalizedContent(pkg, 'name')}
+                  {getLocalizedContent(pkg, "name")}
                 </motion.h3>
 
                 {/* Description - mai mic */}
                 <p className="text-gray-600 text-xs leading-relaxed mb-3">
-                  {getLocalizedContent(pkg, 'description')}
+                  {getLocalizedContent(pkg, "description")}
                 </p>
 
                 {/* Duration - mai compact */}
                 <div className="flex items-center gap-2 text-xs text-gray-600 mb-3 pb-3 border-b border-gray-100">
                   <span>⏱️</span>
-                  <span className="font-medium">{pkg.duration_minutes} {t('services.minutes')}</span>
+                  <span className="font-medium">
+                    {pkg.duration_minutes} {t("services.minutes")}
+                  </span>
                 </div>
 
                 {/* Features - mai compact */}
                 <div className="mb-4">
                   <p className="text-[10px] font-semibold text-gray-700 mb-2 uppercase tracking-wide">
-                    {t('services.included')}
+                    {t("services.included")}
                   </p>
                   <ul className="space-y-1.5">
-                    {getLocalizedContent(pkg, 'features').map((feature, i) => (
+                    {getLocalizedContent(pkg, "features").map((feature, i) => (
                       <motion.li
                         key={i}
                         initial={{ opacity: 0, x: -20 }}
@@ -227,9 +247,11 @@ function Services() {
                     >
                       {pkg.price}
                     </motion.span>
-                    <span className="text-lg text-gray-500 mb-1">€</span>
+                    <span className="text-lg text-gray-500 mb-1">£</span>
                   </div>
-                  <p className="text-[10px] text-gray-500 mt-1">{t('services.oneTimePayment')}</p>
+                  <p className="text-[10px] text-gray-500 mt-1">
+                    {t("services.oneTimePayment")}
+                  </p>
                 </motion.div>
 
                 {/* CTA Button - mai compact */}
@@ -244,7 +266,7 @@ function Services() {
                     whileHover={{ x: 3 }}
                     className="inline-flex items-center gap-2"
                   >
-                    📅 {t('services.bookNow')} →
+                    📅 {t("services.bookNow")} →
                   </motion.span>
                 </motion.button>
               </div>
@@ -260,7 +282,9 @@ function Services() {
             transition={{ duration: 0.5 }}
             className="text-center py-10"
           >
-            <p className="text-gray-500 text-base">{t('services.noServices')}</p>
+            <p className="text-gray-500 text-base">
+              {t("services.noServices")}
+            </p>
           </motion.div>
         )}
       </div>

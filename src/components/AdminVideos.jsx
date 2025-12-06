@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { useState, useEffect } from "react";
+import { supabase } from "../lib/supabase";
 
 function AdminVideos() {
   const [videos, setVideos] = useState([]);
@@ -9,29 +9,29 @@ function AdminVideos() {
   const [uploading, setUploading] = useState(false);
 
   const [formData, setFormData] = useState({
-    title_ro: '',
-    title_en: '',
-    title_ru: '',
-    description_ro: '',
-    description_en: '',
-    description_ru: '',
-    category: 'positions',
-    duration: '',
-    video_type: 'youtube',
-    youtube_url: '',
+    title_ro: "",
+    title_en: "",
+    title_ru: "",
+    description_ro: "",
+    description_en: "",
+    description_ru: "",
+    category: "positions",
+    duration: "",
+    video_type: "youtube",
+    youtube_url: "",
     video_file: null,
     thumbnail_file: null,
     order_index: 0,
-    is_active: true
+    is_active: true,
   });
 
   const categories = [
-    { value: 'positions', label: 'Poziții' },
-    { value: 'latch', label: 'Atașare' },
-    { value: 'massage', label: 'Masaj' },
-    { value: 'problems', label: 'Probleme' },
-    { value: 'pumping', label: 'Extragere' },
-    { value: 'care', label: 'Îngrijire' }
+    { value: "positions", label: "Poziții" },
+    { value: "latch", label: "Atașare" },
+    { value: "massage", label: "Masaj" },
+    { value: "problems", label: "Probleme" },
+    { value: "pumping", label: "Extragere" },
+    { value: "care", label: "Îngrijire" },
   ];
 
   useEffect(() => {
@@ -41,13 +41,13 @@ function AdminVideos() {
   const fetchVideos = async () => {
     setLoading(true);
     const { data, error } = await supabase
-      .from('videos')
-      .select('*')
-      .order('order_index', { ascending: true });
+      .from("videos")
+      .select("*")
+      .order("order_index", { ascending: true });
 
     if (error) {
-      console.error('Error:', error);
-      alert('Eroare la încărcare: ' + error.message);
+      console.error("Error:", error);
+      alert("Eroare la încărcare: " + error.message);
     } else {
       setVideos(data || []);
     }
@@ -56,10 +56,10 @@ function AdminVideos() {
 
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
-    
-    if (type === 'file') {
+
+    if (type === "file") {
       setFormData({ ...formData, [name]: files[0] });
-    } else if (type === 'checkbox') {
+    } else if (type === "checkbox") {
       setFormData({ ...formData, [name]: checked });
     } else {
       setFormData({ ...formData, [name]: value });
@@ -67,25 +67,28 @@ function AdminVideos() {
   };
 
   const extractYouTubeID = (url) => {
-    const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    const regExp =
+      /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
     const match = url.match(regExp);
-    return (match && match[7].length === 11) ? match[7] : null;
+    return match && match[7].length === 11 ? match[7] : null;
   };
 
   const uploadFile = async (file, folder) => {
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${Date.now()}-${Math.random()
+      .toString(36)
+      .substring(7)}.${fileExt}`;
     const filePath = `${folder}/${fileName}`;
 
     const { error: uploadError } = await supabase.storage
-      .from('videos')
+      .from("videos")
       .upload(filePath, file);
 
     if (uploadError) throw uploadError;
 
-    const { data: { publicUrl } } = supabase.storage
-      .from('videos')
-      .getPublicUrl(filePath);
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from("videos").getPublicUrl(filePath);
 
     return publicUrl;
   };
@@ -99,12 +102,12 @@ function AdminVideos() {
       let thumbnailUrl = null;
       let youtubeId = null;
 
-      if (formData.video_type === 'upload' && formData.video_file) {
-        videoUrl = await uploadFile(formData.video_file, 'uploaded-videos');
-      } else if (formData.video_type === 'youtube' && formData.youtube_url) {
+      if (formData.video_type === "upload" && formData.video_file) {
+        videoUrl = await uploadFile(formData.video_file, "uploaded-videos");
+      } else if (formData.video_type === "youtube" && formData.youtube_url) {
         youtubeId = extractYouTubeID(formData.youtube_url);
         if (!youtubeId) {
-          alert('Link YouTube invalid!');
+          alert("Link YouTube invalid!");
           setUploading(false);
           return;
         }
@@ -112,7 +115,7 @@ function AdminVideos() {
       }
 
       if (formData.thumbnail_file) {
-        thumbnailUrl = await uploadFile(formData.thumbnail_file, 'thumbnails');
+        thumbnailUrl = await uploadFile(formData.thumbnail_file, "thumbnails");
       }
 
       const videoData = {
@@ -125,33 +128,35 @@ function AdminVideos() {
         category: formData.category,
         duration: formData.duration,
         video_type: formData.video_type,
-        youtube_url: youtubeId ? `https://www.youtube.com/watch?v=${youtubeId}` : null,
+        youtube_url: youtubeId
+          ? `https://www.youtube.com/watch?v=${youtubeId}`
+          : null,
         video_url: videoUrl,
         thumbnail_url: thumbnailUrl,
         order_index: parseInt(formData.order_index),
-        is_active: formData.is_active
+        is_active: formData.is_active,
       };
 
       let result;
       if (editingVideo) {
         result = await supabase
-          .from('videos')
+          .from("videos")
           .update(videoData)
-          .eq('id', editingVideo.id);
+          .eq("id", editingVideo.id);
       } else {
-        result = await supabase
-          .from('videos')
-          .insert([videoData]);
+        result = await supabase.from("videos").insert([videoData]);
       }
 
       if (result.error) throw result.error;
 
-      alert(editingVideo ? '✅ Videoclip actualizat!' : '✅ Videoclip adăugat!');
+      alert(
+        editingVideo ? "✅ Videoclip actualizat!" : "✅ Videoclip adăugat!"
+      );
       resetForm();
       fetchVideos();
     } catch (error) {
-      console.error('Error:', error);
-      alert('❌ Eroare: ' + error.message);
+      console.error("Error:", error);
+      alert("❌ Eroare: " + error.message);
     } finally {
       setUploading(false);
     }
@@ -167,49 +172,46 @@ function AdminVideos() {
       description_en: video.description_en,
       description_ru: video.description_ru,
       category: video.category,
-      duration: video.duration || '',
+      duration: video.duration || "",
       video_type: video.video_type,
-      youtube_url: video.youtube_url || '',
+      youtube_url: video.youtube_url || "",
       video_file: null,
       thumbnail_file: null,
       order_index: video.order_index,
-      is_active: video.is_active
+      is_active: video.is_active,
     });
     setIsAdding(true);
   };
 
   const handleDelete = async (id) => {
-    if (!confirm('Sigur vrei să ștergi acest videoclip?')) return;
+    if (!confirm("Sigur vrei să ștergi acest videoclip?")) return;
 
-    const { error } = await supabase
-      .from('videos')
-      .delete()
-      .eq('id', id);
+    const { error } = await supabase.from("videos").delete().eq("id", id);
 
     if (error) {
-      alert('Eroare: ' + error.message);
+      alert("Eroare: " + error.message);
     } else {
-      alert('✅ Videoclip șters!');
+      alert("✅ Videoclip șters!");
       fetchVideos();
     }
   };
 
   const resetForm = () => {
     setFormData({
-      title_ro: '',
-      title_en: '',
-      title_ru: '',
-      description_ro: '',
-      description_en: '',
-      description_ru: '',
-      category: 'positions',
-      duration: '',
-      video_type: 'youtube',
-      youtube_url: '',
+      title_ro: "",
+      title_en: "",
+      title_ru: "",
+      description_ro: "",
+      description_en: "",
+      description_ru: "",
+      category: "positions",
+      duration: "",
+      video_type: "youtube",
+      youtube_url: "",
       video_file: null,
       thumbnail_file: null,
       order_index: 0,
-      is_active: true
+      is_active: true,
     });
     setEditingVideo(null);
     setIsAdding(false);
@@ -226,31 +228,35 @@ function AdminVideos() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-800">📹 Gestionare Videoclipuri</h2>
+        <h2 className="text-2xl font-bold text-gray-800">
+          📹 Gestionare Videoclipuri
+        </h2>
         <button
           onClick={() => setIsAdding(!isAdding)}
           className="bg-gradient-to-r from-pink-500 to-orange-500 text-white px-6 py-2 rounded-lg hover:shadow-lg transition-all"
         >
-          {isAdding ? '✕ Închide' : '+ Adaugă Videoclip'}
+          {isAdding ? "✕ Închide" : "+ Adaugă Videoclip"}
         </button>
       </div>
 
       {isAdding && (
         <div className="bg-white p-6 rounded-xl shadow-lg">
           <h3 className="text-xl font-bold mb-4 text-gray-800">
-            {editingVideo ? '✏️ Editează Videoclip' : '➕ Adaugă Videoclip Nou'}
+            {editingVideo ? "✏️ Editează Videoclip" : "➕ Adaugă Videoclip Nou"}
           </h3>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Tip Videoclip *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Tip Videoclip *
+              </label>
               <div className="flex gap-4">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="radio"
                     name="video_type"
                     value="youtube"
-                    checked={formData.video_type === 'youtube'}
+                    checked={formData.video_type === "youtube"}
                     onChange={handleChange}
                     className="w-4 h-4 text-pink-600"
                   />
@@ -261,7 +267,7 @@ function AdminVideos() {
                     type="radio"
                     name="video_type"
                     value="upload"
-                    checked={formData.video_type === 'upload'}
+                    checked={formData.video_type === "upload"}
                     onChange={handleChange}
                     className="w-4 h-4 text-pink-600"
                   />
@@ -270,9 +276,11 @@ function AdminVideos() {
               </div>
             </div>
 
-            {formData.video_type === 'youtube' && (
+            {formData.video_type === "youtube" && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Link YouTube *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Link YouTube *
+                </label>
                 <input
                   type="url"
                   name="youtube_url"
@@ -282,11 +290,13 @@ function AdminVideos() {
                   placeholder="https://www.youtube.com/watch?v=..."
                   className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-pink-500"
                 />
-                <p className="text-xs text-gray-500 mt-1">✨ Thumbnail-ul se generează automat</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  ✨ Thumbnail-ul se generează automat
+                </p>
               </div>
             )}
 
-            {formData.video_type === 'upload' && (
+            {formData.video_type === "upload" && (
               <>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -318,7 +328,9 @@ function AdminVideos() {
 
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Categorie *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Categorie *
+                </label>
                 <select
                   name="category"
                   value={formData.category}
@@ -326,13 +338,17 @@ function AdminVideos() {
                   required
                   className="w-full px-4 py-2 border rounded-lg"
                 >
-                  {categories.map(cat => (
-                    <option key={cat.value} value={cat.value}>{cat.label}</option>
+                  {categories.map((cat) => (
+                    <option key={cat.value} value={cat.value}>
+                      {cat.label}
+                    </option>
                   ))}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Durată (ex: 5:30)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Durată (ex: 5:30)
+                </label>
                 <input
                   type="text"
                   name="duration"
@@ -346,7 +362,9 @@ function AdminVideos() {
 
             <div className="grid md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Titlu RO *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Titlu RO *
+                </label>
                 <input
                   type="text"
                   name="title_ro"
@@ -357,7 +375,9 @@ function AdminVideos() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Titlu EN</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Titlu EN
+                </label>
                 <input
                   type="text"
                   name="title_en"
@@ -368,7 +388,9 @@ function AdminVideos() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Titlu RU</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Titlu RU
+                </label>
                 <input
                   type="text"
                   name="title_ru"
@@ -382,7 +404,9 @@ function AdminVideos() {
 
             <div className="grid md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Descriere RO *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Descriere RO *
+                </label>
                 <textarea
                   name="description_ro"
                   value={formData.description_ro}
@@ -393,7 +417,9 @@ function AdminVideos() {
                 ></textarea>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Descriere EN</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Descriere EN
+                </label>
                 <textarea
                   name="description_en"
                   value={formData.description_en}
@@ -404,7 +430,9 @@ function AdminVideos() {
                 ></textarea>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Descriere RU</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Descriere RU
+                </label>
                 <textarea
                   name="description_ru"
                   value={formData.description_ru}
@@ -418,7 +446,9 @@ function AdminVideos() {
 
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Ordine (sortare)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Ordine (sortare)
+                </label>
                 <input
                   type="number"
                   name="order_index"
@@ -435,7 +465,9 @@ function AdminVideos() {
                   onChange={handleChange}
                   className="w-5 h-5"
                 />
-                <label className="text-sm font-medium text-gray-700">✅ Activ (vizibil pe site)</label>
+                <label className="text-sm font-medium text-gray-700">
+                  ✅ Activ (vizibil pe site)
+                </label>
               </div>
             </div>
 
@@ -445,7 +477,11 @@ function AdminVideos() {
                 disabled={uploading}
                 className="flex-1 bg-gradient-to-r from-pink-500 to-orange-500 text-white py-3 rounded-lg font-medium hover:shadow-lg transition-all disabled:opacity-50"
               >
-                {uploading ? '⏳ Se încarcă...' : (editingVideo ? '✓ Actualizează' : '+ Adaugă')}
+                {uploading
+                  ? "⏳ Se încarcă..."
+                  : editingVideo
+                  ? "✓ Actualizează"
+                  : "+ Adaugă"}
               </button>
               <button
                 type="button"
@@ -461,15 +497,24 @@ function AdminVideos() {
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {videos.map((video) => (
-          <div key={video.id} className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div
+            key={video.id}
+            className="bg-white rounded-xl shadow-lg overflow-hidden"
+          >
             <div className="relative aspect-video bg-gray-200">
               {video.thumbnail_url ? (
-                <img src={video.thumbnail_url} alt={video.title_ro} className="w-full h-full object-cover" />
+                <img
+                  src={video.thumbnail_url}
+                  alt={video.title_ro}
+                  className="w-full h-full object-cover"
+                />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-4xl">🎥</div>
+                <div className="w-full h-full flex items-center justify-center text-4xl">
+                  🎥
+                </div>
               )}
               <div className="absolute top-2 left-2 bg-pink-500 text-white text-xs px-2 py-1 rounded">
-                {categories.find(c => c.value === video.category)?.label}
+                {categories.find((c) => c.value === video.category)?.label}
               </div>
               {video.duration && (
                 <div className="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white text-xs px-2 py-1 rounded">
@@ -484,12 +529,22 @@ function AdminVideos() {
             </div>
 
             <div className="p-4">
-              <h3 className="font-bold text-gray-800 mb-2 line-clamp-2">{video.title_ro}</h3>
-              <p className="text-sm text-gray-600 mb-4 line-clamp-2">{video.description_ro}</p>
-              
+              <h3 className="font-bold text-gray-800 mb-2 line-clamp-2">
+                {video.title_ro}
+              </h3>
+              <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                {video.description_ro}
+              </p>
+
               <div className="flex items-center gap-2 text-xs mb-4">
-                <span className={`px-2 py-1 rounded ${video.video_type === 'youtube' ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'}`}>
-                  {video.video_type === 'youtube' ? '▶️ YouTube' : '📤 Upload'}
+                <span
+                  className={`px-2 py-1 rounded ${
+                    video.video_type === "youtube"
+                      ? "bg-red-100 text-red-700"
+                      : "bg-blue-100 text-blue-700"
+                  }`}
+                >
+                  {video.video_type === "youtube" ? "▶️ YouTube" : "📤 Upload"}
                 </span>
               </div>
 
