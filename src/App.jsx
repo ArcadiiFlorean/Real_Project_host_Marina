@@ -1,16 +1,16 @@
-import { lazy, Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
-import Hero3D from './components/Hero3D';
-import ParallaxBackground from './components/ParallaxBackground';
-import Admin from './pages/Admin'; // ← SCHIMBAT aici!
+import { lazy, Suspense } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import Hero3D from "./components/Hero3D";
+// import ParallaxBackground from './components/ParallaxBackground';
+import Admin from "./pages/Admin"; // ← SCHIMBAT aici!
 
 // Lazy loading pentru componente grele
-const Services = lazy(() => import('./components/Services'));
-const AboutMe = lazy(() => import('./components/AboutMe'));
-const VideoPractice = lazy(() => import('./components/VideoPractice'));
-const Contact = lazy(() => import('./components/Contact'));
-const Footer = lazy(() => import('./components/Footer'));
+const Services = lazy(() => import("./components/Services"));
+const AboutMe = lazy(() => import("./components/AboutMe"));
+const VideoPractice = lazy(() => import("./components/VideoPractice"));
+const Contact = lazy(() => import("./components/Contact"));
+const Footer = lazy(() => import("./components/Footer"));
 
 // Loading Spinner Component
 const LoadingSpinner = () => (
@@ -23,27 +23,30 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={
-          <div className="min-h-screen relative">
-            <ParallaxBackground />
-            <Header />
-            <Hero3D />
-            
-            {/* Suspense pentru componente lazy-loaded */}
-            <Suspense fallback={<LoadingSpinner />}>
-              <AboutMe />
-              <Services />
-              <VideoPractice />
-              <Contact />
-              <Footer />
-            </Suspense>
-          </div>
-        } />
-        
+        <Route
+          path="/"
+          element={
+            <div className="min-h-screen relative">
+              {/* <ParallaxBackground /> */}
+              <Header />
+              <Hero3D />
+
+              {/* Suspense pentru componente lazy-loaded */}
+              <Suspense fallback={<LoadingSpinner />}>
+                <AboutMe />
+                <Services />
+                <VideoPractice />
+                <Contact />
+                <Footer />
+              </Suspense>
+            </div>
+          }
+        />
+
         <Route path="/admin" element={<Admin />} />
       </Routes>
     </Router>
-  )
+  );
 }
 
 export default App;

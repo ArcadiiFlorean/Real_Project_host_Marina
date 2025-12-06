@@ -72,12 +72,12 @@ function Services() {
 
   if (loading) {
     return (
-      <section className="py-20 bg-white">
+      <section className="py-12 bg-white">
         <div className="container mx-auto px-6 text-center">
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-            className="w-12 h-12 border-4 border-pink-500 border-t-transparent rounded-full mx-auto"
+            className="w-10 h-10 border-4 border-pink-500 border-t-transparent rounded-full mx-auto"
           />
         </div>
       </section>
@@ -85,95 +85,79 @@ function Services() {
   }
 
   return (
-    <section id="servicii" className="relative py-20 bg-gradient-to-b from-white to-pink-50 overflow-hidden">
-      {/* Decorative Circles */}
-      <motion.div
-        animate={{
-          scale: [1, 1.1, 1],
-          opacity: [0.2, 0.3, 0.2]
-        }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-20 right-10 w-64 h-64 bg-pink-200 rounded-full blur-3xl"
-      />
-      <motion.div
-        animate={{
-          scale: [1, 1.1, 1],
-          opacity: [0.2, 0.3, 0.2]
-        }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        className="absolute bottom-20 left-10 w-72 h-72 bg-orange-200 rounded-full blur-3xl"
-      />
+    <section id="servicii" className="relative py-12 bg-gradient-to-b from-white to-pink-50 overflow-hidden">
+      {/* Decorative Circles - mai mici */}
+      <div className="absolute top-10 right-10 w-48 h-48 bg-pink-200 rounded-full blur-3xl opacity-20" />
+      <div className="absolute bottom-10 left-10 w-56 h-56 bg-orange-200 rounded-full blur-3xl opacity-20" />
 
-      <div className="container mx-auto px-6 max-w-7xl">
-        {/* Header */}
+      <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
+        {/* Header - mai compact */}
         <motion.div
           variants={headerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="text-center mb-16"
+          className="text-center mb-10"
         >
           <motion.div
             initial={{ scale: 0 }}
             whileInView={{ scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, type: "spring" }}
-            className="inline-flex items-center gap-2 bg-white backdrop-blur px-4 py-2 rounded-full shadow-md mb-4"
+            className="inline-flex items-center gap-2 bg-white backdrop-blur px-3 py-1.5 rounded-full shadow-md mb-3"
           >
             <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
-            <span className="text-sm text-gray-700">💝 {t('services.badge')}</span>
+            <span className="text-xs text-gray-700">💝 {t('services.badge')}</span>
           </motion.div>
           
-          <h2 className="text-4xl lg:text-5xl font-bold text-[#8B4513] leading-tight mb-4">
+          <h2 className="text-3xl lg:text-4xl font-bold text-[#8B4513] leading-tight mb-3">
             {t('services.title')}<br />
             <span className="bg-gradient-to-r from-pink-600 to-orange-600 bg-clip-text text-transparent">
               {t('services.titleHighlight')}
             </span>
           </h2>
           
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-base text-gray-600 max-w-2xl mx-auto">
             {t('services.subtitle')}
           </p>
         </motion.div>
 
-        {/* Packages Grid */}
+        {/* Packages Grid - mai compact */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {packages.map((pkg) => (
             <motion.div
               key={pkg.id}
               variants={cardVariants}
-              whileHover={{ y: -10, scale: pkg.is_popular ? 1.02 : 1.05 }}
-              className={`relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden group ${
+              whileHover={{ y: -8, scale: pkg.is_popular ? 1.02 : 1.03 }}
+              className={`relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden group ${
                 pkg.is_popular ? 'border-2 border-pink-400' : ''
               }`}
             >
-              {/* Popular Badge */}
+              {/* Popular Badge - mai mic */}
               {pkg.is_popular && (
                 <motion.div
                   initial={{ scale: 0, rotate: -180 }}
                   whileInView={{ scale: 1, rotate: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.3, type: "spring" }}
-                  animate={{ y: [0, -5, 0] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute top-4 right-4 bg-gradient-to-r from-pink-500 to-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg z-10"
+                  className="absolute top-3 right-3 bg-gradient-to-r from-pink-500 to-orange-500 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-lg z-10"
                 >
                   ⭐ {t('services.popular')}
                 </motion.div>
               )}
 
-              {/* Icon Header */}
-              <div className="relative h-32 bg-gradient-to-br from-pink-400 to-orange-400 flex items-center justify-center overflow-hidden">
+              {/* Icon Header - mai mic */}
+              <div className="relative h-24 bg-gradient-to-br from-pink-400 to-orange-400 flex items-center justify-center overflow-hidden">
                 <motion.span
                   whileHover={{ scale: 1.2, rotate: 10 }}
                   transition={{ duration: 0.3 }}
-                  className="text-6xl relative z-10"
+                  className="text-4xl relative z-10"
                 >
                   {pkg.icon}
                 </motion.span>
@@ -185,33 +169,33 @@ function Services() {
                 />
               </div>
 
-              <div className="relative p-6">
-                {/* Package Name */}
+              <div className="relative p-5">
+                {/* Package Name - mai mic */}
                 <motion.h3
-                  whileHover={{ x: 5 }}
+                  whileHover={{ x: 3 }}
                   transition={{ duration: 0.2 }}
-                  className="text-2xl font-bold text-gray-800 mb-2 group-hover:text-pink-600 transition-colors"
+                  className="text-xl font-bold text-gray-800 mb-2 group-hover:text-pink-600 transition-colors"
                 >
                   {getLocalizedContent(pkg, 'name')}
                 </motion.h3>
 
-                {/* Description */}
-                <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                {/* Description - mai mic */}
+                <p className="text-gray-600 text-xs leading-relaxed mb-3">
                   {getLocalizedContent(pkg, 'description')}
                 </p>
 
-                {/* Duration */}
-                <div className="flex items-center gap-2 text-sm text-gray-600 mb-4 pb-4 border-b border-gray-100">
+                {/* Duration - mai compact */}
+                <div className="flex items-center gap-2 text-xs text-gray-600 mb-3 pb-3 border-b border-gray-100">
                   <span>⏱️</span>
                   <span className="font-medium">{pkg.duration_minutes} {t('services.minutes')}</span>
                 </div>
 
-                {/* Features */}
-                <div className="mb-6">
-                  <p className="text-xs font-semibold text-gray-700 mb-3 uppercase tracking-wide">
+                {/* Features - mai compact */}
+                <div className="mb-4">
+                  <p className="text-[10px] font-semibold text-gray-700 mb-2 uppercase tracking-wide">
                     {t('services.included')}
                   </p>
-                  <ul className="space-y-2">
+                  <ul className="space-y-1.5">
                     {getLocalizedContent(pkg, 'features').map((feature, i) => (
                       <motion.li
                         key={i}
@@ -219,45 +203,45 @@ function Services() {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.3, delay: i * 0.1 }}
-                        className="flex items-start gap-2 text-sm text-gray-600"
+                        className="flex items-start gap-2 text-xs text-gray-600"
                       >
-                        <span className="text-green-500 mt-0.5">✓</span>
+                        <span className="text-green-500 mt-0.5 text-sm">✓</span>
                         <span>{feature}</span>
                       </motion.li>
                     ))}
                   </ul>
                 </div>
 
-                {/* Price */}
+                {/* Price - mai compact */}
                 <motion.div
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.3 }}
-                  className="mb-6 pt-4 border-t border-gray-100"
+                  className="mb-4 pt-3 border-t border-gray-100"
                 >
                   <div className="flex items-end gap-2">
                     <motion.span
-                      whileHover={{ scale: 1.1 }}
-                      className="text-4xl font-bold text-pink-600"
+                      whileHover={{ scale: 1.05 }}
+                      className="text-3xl font-bold text-pink-600"
                     >
                       {pkg.price}
                     </motion.span>
-                    <span className="text-xl text-gray-500 mb-1">€</span>
+                    <span className="text-lg text-gray-500 mb-1">€</span>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">{t('services.oneTimePayment')}</p>
+                  <p className="text-[10px] text-gray-500 mt-1">{t('services.oneTimePayment')}</p>
                 </motion.div>
 
-                {/* CTA Button */}
+                {/* CTA Button - mai compact */}
                 <motion.button
                   onClick={() => handleBooking(pkg)}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full py-3 bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white rounded-xl font-medium shadow-lg hover:shadow-xl transition-shadow duration-300"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="w-full py-2.5 bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white rounded-xl text-sm font-medium shadow-lg hover:shadow-xl transition-shadow duration-300"
                 >
                   <motion.span
                     initial={{ x: 0 }}
-                    whileHover={{ x: 5 }}
+                    whileHover={{ x: 3 }}
                     className="inline-flex items-center gap-2"
                   >
                     📅 {t('services.bookNow')} →
@@ -274,9 +258,9 @@ function Services() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="text-center py-12"
+            className="text-center py-10"
           >
-            <p className="text-gray-500 text-lg">{t('services.noServices')}</p>
+            <p className="text-gray-500 text-base">{t('services.noServices')}</p>
           </motion.div>
         )}
       </div>
