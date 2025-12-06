@@ -32,18 +32,16 @@
     "paragraph1": "Călătoria mea în lumea consultanței în alăptare a început acum peste 5 ani, când am devenit mamă pentru prima dată. Provocările pe care le-am întâmpinat m-au determinat să studiez profund acest domeniu frumos și să ajut alte mame.",
     "paragraph2": "Am absolvit cursuri internaționale de certificare IBCLC și am lucrat cu peste 500 de familii, fiecare cu povestea ei unică. Pasiunea mea este să ofer suport personalizat, adaptat nevoilor fiecărei mame și bebeluș.",
     "paragraph3": "Cred cu tărie că fiecare mamă merită să fie ascultată, înțeleasă și susținută în această călătorie minunată. Sunt aici pentru tine, cu empatie, experiență și soluții practice.",
+    "stat1": "Familii ajutate",
+    "stat2": "Ani experiență",
+    "stat3": "Satisfacție clienți",
+    "stat4": "Disponibilitate",
     "credentials": {
       "title": "Credențiale și specializări",
       "cert1": "Consultant IBCLC Certificat Internațional",
       "cert2": "Specialist în Lactație WHO/UNICEF",
       "cert3": "Curs avansat în Probleme Complexe de Alăptare",
       "cert4": "Formare în Suport Emoțional pentru Mame"
-    },
-    "stats": {
-      "families": "Familii ajutate",
-      "years": "Ani experiență",
-      "satisfaction": "Satisfacție clienți",
-      "available": "Disponibilitate"
     }
   },
   "services": {

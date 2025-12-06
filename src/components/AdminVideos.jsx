@@ -7,7 +7,6 @@ function AdminVideos() {
   const [editingVideo, setEditingVideo] = useState(null);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
 
   const [formData, setFormData] = useState({
     title_ro: '',
@@ -47,10 +46,10 @@ function AdminVideos() {
       .order('order_index', { ascending: true });
 
     if (error) {
-      console.error('Error fetching videos:', error);
-      alert('Eroare la încărcarea videoclipurilor');
+      console.error('Error:', error);
+      alert('Eroare la încărcare: ' + error.message);
     } else {
-      setVideos(data);
+      setVideos(data || []);
     }
     setLoading(false);
   };
@@ -73,19 +72,16 @@ function AdminVideos() {
     return (match && match[7].length === 11) ? match[7] : null;
   };
 
-  const uploadFile = async (file, path) => {
+  const uploadFile = async (file, folder) => {
     const fileExt = file.name.split('.').pop();
-    const fileName = `${Math.random()}.${fileExt}`;
-    const filePath = `${path}/${fileName}`;
+    const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+    const filePath = `${folder}/${fileName}`;
 
-    const { data, error } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from('videos')
-      .upload(filePath, file, {
-        cacheControl: '3600',
-        upsert: false
-      });
+      .upload(filePath, file);
 
-    if (error) throw error;
+    if (uploadError) throw uploadError;
 
     const { data: { publicUrl } } = supabase.storage
       .from('videos')
@@ -97,18 +93,14 @@ function AdminVideos() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setUploading(true);
-    setUploadProgress(0);
 
     try {
       let videoUrl = null;
       let thumbnailUrl = null;
       let youtubeId = null;
 
-      // Upload video file sau procesează YouTube URL
       if (formData.video_type === 'upload' && formData.video_file) {
-        setUploadProgress(30);
-        videoUrl = await uploadFile(formData.video_file, 'videos');
-        setUploadProgress(50);
+        videoUrl = await uploadFile(formData.video_file, 'uploaded-videos');
       } else if (formData.video_type === 'youtube' && formData.youtube_url) {
         youtubeId = extractYouTubeID(formData.youtube_url);
         if (!youtubeId) {
@@ -119,21 +111,17 @@ function AdminVideos() {
         thumbnailUrl = `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`;
       }
 
-      // Upload thumbnail (optional pentru upload, override pentru YouTube)
       if (formData.thumbnail_file) {
-        setUploadProgress(70);
         thumbnailUrl = await uploadFile(formData.thumbnail_file, 'thumbnails');
       }
 
-      setUploadProgress(90);
-
       const videoData = {
         title_ro: formData.title_ro,
-        title_en: formData.title_en,
-        title_ru: formData.title_ru,
+        title_en: formData.title_en || formData.title_ro,
+        title_ru: formData.title_ru || formData.title_ro,
         description_ro: formData.description_ro,
-        description_en: formData.description_en,
-        description_ru: formData.description_ru,
+        description_en: formData.description_en || formData.description_ro,
+        description_ru: formData.description_ru || formData.description_ro,
         category: formData.category,
         duration: formData.duration,
         video_type: formData.video_type,
@@ -158,15 +146,14 @@ function AdminVideos() {
 
       if (result.error) throw result.error;
 
-      alert(editingVideo ? 'Videoclip actualizat!' : 'Videoclip adăugat!');
+      alert(editingVideo ? '✅ Videoclip actualizat!' : '✅ Videoclip adăugat!');
       resetForm();
       fetchVideos();
     } catch (error) {
       console.error('Error:', error);
-      alert('Eroare: ' + error.message);
+      alert('❌ Eroare: ' + error.message);
     } finally {
       setUploading(false);
-      setUploadProgress(0);
     }
   };
 
@@ -180,7 +167,7 @@ function AdminVideos() {
       description_en: video.description_en,
       description_ru: video.description_ru,
       category: video.category,
-      duration: video.duration,
+      duration: video.duration || '',
       video_type: video.video_type,
       youtube_url: video.youtube_url || '',
       video_file: null,
@@ -200,9 +187,9 @@ function AdminVideos() {
       .eq('id', id);
 
     if (error) {
-      alert('Eroare la ștergere: ' + error.message);
+      alert('Eroare: ' + error.message);
     } else {
-      alert('Videoclip șters!');
+      alert('✅ Videoclip șters!');
       fetchVideos();
     }
   };
@@ -229,13 +216,17 @@ function AdminVideos() {
   };
 
   if (loading) {
-    return <div className="text-center py-8">Se încarcă...</div>;
+    return (
+      <div className="flex justify-center items-center py-20">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div>
+      </div>
+    );
   }
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-800">Gestionare Videoclipuri</h2>
+        <h2 className="text-2xl font-bold text-gray-800">📹 Gestionare Videoclipuri</h2>
         <button
           onClick={() => setIsAdding(!isAdding)}
           className="bg-gradient-to-r from-pink-500 to-orange-500 text-white px-6 py-2 rounded-lg hover:shadow-lg transition-all"
@@ -244,15 +235,13 @@ function AdminVideos() {
         </button>
       </div>
 
-      {/* Add/Edit Form */}
       {isAdding && (
         <div className="bg-white p-6 rounded-xl shadow-lg">
           <h3 className="text-xl font-bold mb-4 text-gray-800">
-            {editingVideo ? 'Editează Videoclip' : 'Adaugă Videoclip Nou'}
+            {editingVideo ? '✏️ Editează Videoclip' : '➕ Adaugă Videoclip Nou'}
           </h3>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Video Type */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Tip Videoclip *</label>
               <div className="flex gap-4">
@@ -263,9 +252,9 @@ function AdminVideos() {
                     value="youtube"
                     checked={formData.video_type === 'youtube'}
                     onChange={handleChange}
-                    className="w-4 h-4"
+                    className="w-4 h-4 text-pink-600"
                   />
-                  <span>🎥 YouTube</span>
+                  <span>▶️ YouTube</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
@@ -274,14 +263,13 @@ function AdminVideos() {
                     value="upload"
                     checked={formData.video_type === 'upload'}
                     onChange={handleChange}
-                    className="w-4 h-4"
+                    className="w-4 h-4 text-pink-600"
                   />
                   <span>📤 Upload Video</span>
                 </label>
               </div>
             </div>
 
-            {/* YouTube URL */}
             {formData.video_type === 'youtube' && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Link YouTube *</label>
@@ -294,70 +282,68 @@ function AdminVideos() {
                   placeholder="https://www.youtube.com/watch?v=..."
                   className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-pink-500"
                 />
-                <p className="text-xs text-gray-500 mt-1">Thumbnail-ul va fi generat automat de la YouTube</p>
+                <p className="text-xs text-gray-500 mt-1">✨ Thumbnail-ul se generează automat</p>
               </div>
             )}
 
-            {/* Video File Upload */}
             {formData.video_type === 'upload' && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Încarcă Video * (MP4, MOV, AVI)</label>
-                <input
-                  type="file"
-                  name="video_file"
-                  accept="video/*"
-                  onChange={handleChange}
-                  required={!editingVideo}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-pink-500"
-                />
-                <p className="text-xs text-gray-500 mt-1">Mărime maximă recomandată: 100MB</p>
-              </div>
+              <>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Încarcă Video * (MP4, MOV, AVI - max 100MB)
+                  </label>
+                  <input
+                    type="file"
+                    name="video_file"
+                    accept="video/*"
+                    onChange={handleChange}
+                    required={!editingVideo}
+                    className="w-full px-4 py-2 border rounded-lg"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Thumbnail (Opțional - JPG, PNG)
+                  </label>
+                  <input
+                    type="file"
+                    name="thumbnail_file"
+                    accept="image/*"
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border rounded-lg"
+                  />
+                </div>
+              </>
             )}
 
-            {/* Thumbnail Upload (optional for upload, override for YouTube) */}
-            {formData.video_type === 'upload' && (
+            <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Thumbnail (JPG, PNG)</label>
-                <input
-                  type="file"
-                  name="thumbnail_file"
-                  accept="image/*"
+                <label className="block text-sm font-medium text-gray-700 mb-2">Categorie *</label>
+                <select
+                  name="category"
+                  value={formData.category}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-pink-500"
+                  required
+                  className="w-full px-4 py-2 border rounded-lg"
+                >
+                  {categories.map(cat => (
+                    <option key={cat.value} value={cat.value}>{cat.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Durată (ex: 5:30)</label>
+                <input
+                  type="text"
+                  name="duration"
+                  value={formData.duration}
+                  onChange={handleChange}
+                  placeholder="5:30"
+                  className="w-full px-4 py-2 border rounded-lg"
                 />
               </div>
-            )}
-
-            {/* Category */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Categorie *</label>
-              <select
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-pink-500"
-              >
-                {categories.map(cat => (
-                  <option key={cat.value} value={cat.value}>{cat.label}</option>
-                ))}
-              </select>
             </div>
 
-            {/* Duration */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Durată (ex: 5:30)</label>
-              <input
-                type="text"
-                name="duration"
-                value={formData.duration}
-                onChange={handleChange}
-                placeholder="5:30"
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-pink-500"
-              />
-            </div>
-
-            {/* Titles */}
             <div className="grid md:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Titlu RO *</label>
@@ -367,7 +353,7 @@ function AdminVideos() {
                   value={formData.title_ro}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-pink-500"
+                  className="w-full px-4 py-2 border rounded-lg"
                 />
               </div>
               <div>
@@ -377,7 +363,8 @@ function AdminVideos() {
                   name="title_en"
                   value={formData.title_en}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-pink-500"
+                  className="w-full px-4 py-2 border rounded-lg bg-blue-50"
+                  placeholder="Auto: Română"
                 />
               </div>
               <div>
@@ -387,12 +374,12 @@ function AdminVideos() {
                   name="title_ru"
                   value={formData.title_ru}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-pink-500"
+                  className="w-full px-4 py-2 border rounded-lg bg-blue-50"
+                  placeholder="Auto: Română"
                 />
               </div>
             </div>
 
-            {/* Descriptions */}
             <div className="grid md:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Descriere RO *</label>
@@ -402,7 +389,7 @@ function AdminVideos() {
                   onChange={handleChange}
                   required
                   rows="3"
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-pink-500"
+                  className="w-full px-4 py-2 border rounded-lg"
                 ></textarea>
               </div>
               <div>
@@ -412,7 +399,8 @@ function AdminVideos() {
                   value={formData.description_en}
                   onChange={handleChange}
                   rows="3"
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-pink-500"
+                  className="w-full px-4 py-2 border rounded-lg bg-blue-50"
+                  placeholder="Auto: Română"
                 ></textarea>
               </div>
               <div>
@@ -422,12 +410,12 @@ function AdminVideos() {
                   value={formData.description_ru}
                   onChange={handleChange}
                   rows="3"
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-pink-500"
+                  className="w-full px-4 py-2 border rounded-lg bg-blue-50"
+                  placeholder="Auto: Română"
                 ></textarea>
               </div>
             </div>
 
-            {/* Order & Active */}
             <div className="grid md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Ordine (sortare)</label>
@@ -436,10 +424,10 @@ function AdminVideos() {
                   name="order_index"
                   value={formData.order_index}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-pink-500"
+                  className="w-full px-4 py-2 border rounded-lg"
                 />
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 pt-6">
                 <input
                   type="checkbox"
                   name="is_active"
@@ -447,39 +435,22 @@ function AdminVideos() {
                   onChange={handleChange}
                   className="w-5 h-5"
                 />
-                <label className="text-sm font-medium text-gray-700">Activ (vizibil pe site)</label>
+                <label className="text-sm font-medium text-gray-700">✅ Activ (vizibil pe site)</label>
               </div>
             </div>
 
-            {/* Upload Progress */}
-            {uploading && (
-              <div className="bg-blue-50 p-4 rounded-lg">
-                <div className="flex justify-between mb-2">
-                  <span className="text-sm font-medium text-blue-700">Se încarcă...</span>
-                  <span className="text-sm font-medium text-blue-700">{uploadProgress}%</span>
-                </div>
-                <div className="w-full bg-blue-200 rounded-full h-2">
-                  <div 
-                    className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                    style={{ width: `${uploadProgress}%` }}
-                  ></div>
-                </div>
-              </div>
-            )}
-
-            {/* Buttons */}
-            <div className="flex gap-4">
+            <div className="flex gap-4 pt-4">
               <button
                 type="submit"
                 disabled={uploading}
-                className="flex-1 bg-gradient-to-r from-pink-500 to-orange-500 text-white py-3 rounded-lg font-medium hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 bg-gradient-to-r from-pink-500 to-orange-500 text-white py-3 rounded-lg font-medium hover:shadow-lg transition-all disabled:opacity-50"
               >
-                {uploading ? 'Se încarcă...' : (editingVideo ? '✓ Actualizează' : '+ Adaugă Videoclip')}
+                {uploading ? '⏳ Se încarcă...' : (editingVideo ? '✓ Actualizează' : '+ Adaugă')}
               </button>
               <button
                 type="button"
                 onClick={resetForm}
-                className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all"
+                className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
               >
                 Anulează
               </button>
@@ -488,18 +459,14 @@ function AdminVideos() {
         </div>
       )}
 
-      {/* Videos List */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {videos.map((video) => (
           <div key={video.id} className="bg-white rounded-xl shadow-lg overflow-hidden">
-            {/* Thumbnail */}
             <div className="relative aspect-video bg-gray-200">
               {video.thumbnail_url ? (
                 <img src={video.thumbnail_url} alt={video.title_ro} className="w-full h-full object-cover" />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-400">
-                  <span className="text-4xl">🎥</span>
-                </div>
+                <div className="w-full h-full flex items-center justify-center text-4xl">🎥</div>
               )}
               <div className="absolute top-2 left-2 bg-pink-500 text-white text-xs px-2 py-1 rounded">
                 {categories.find(c => c.value === video.category)?.label}
@@ -516,13 +483,12 @@ function AdminVideos() {
               )}
             </div>
 
-            {/* Content */}
             <div className="p-4">
               <h3 className="font-bold text-gray-800 mb-2 line-clamp-2">{video.title_ro}</h3>
               <p className="text-sm text-gray-600 mb-4 line-clamp-2">{video.description_ro}</p>
               
-              <div className="flex items-center gap-2 text-xs text-gray-500 mb-4">
-                <span className={video.video_type === 'youtube' ? 'text-red-500' : 'text-blue-500'}>
+              <div className="flex items-center gap-2 text-xs mb-4">
+                <span className={`px-2 py-1 rounded ${video.video_type === 'youtube' ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'}`}>
                   {video.video_type === 'youtube' ? '▶️ YouTube' : '📤 Upload'}
                 </span>
               </div>
@@ -530,13 +496,13 @@ function AdminVideos() {
               <div className="flex gap-2">
                 <button
                   onClick={() => handleEdit(video)}
-                  className="flex-1 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-all text-sm"
+                  className="flex-1 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 text-sm"
                 >
-                  ✏️ Editează
+                  ✏️ Edit
                 </button>
                 <button
                   onClick={() => handleDelete(video.id)}
-                  className="flex-1 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition-all text-sm"
+                  className="flex-1 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 text-sm"
                 >
                   🗑️ Șterge
                 </button>
@@ -549,10 +515,10 @@ function AdminVideos() {
       {videos.length === 0 && !isAdding && (
         <div className="text-center py-16 bg-white rounded-xl">
           <div className="text-6xl mb-4">🎬</div>
-          <p className="text-xl text-gray-600 mb-4">Niciun videoclip adăugat încă</p>
+          <p className="text-xl text-gray-600 mb-4">Niciun videoclip adăugat</p>
           <button
             onClick={() => setIsAdding(true)}
-            className="bg-gradient-to-r from-pink-500 to-orange-500 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all"
+            className="bg-gradient-to-r from-pink-500 to-orange-500 text-white px-6 py-3 rounded-lg"
           >
             + Adaugă Primul Videoclip
           </button>

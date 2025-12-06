@@ -18,7 +18,6 @@ function Header() {
         behavior: "smooth"
       });
       
-      // Close mobile menu after clicking
       setIsMobileMenuOpen(false);
     }
   };
@@ -74,6 +73,16 @@ function Header() {
                 className="relative hover:text-pink-600 transition-colors duration-300 group"
               >
                 {t("header.services")}
+                <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-gradient-to-r from-pink-400 to-orange-400 transition-all duration-300 group-hover:w-full"></span>
+              </button>
+            </li>
+            {/* ← ADĂUGAT: Videos */}
+            <li>
+              <button
+                onClick={() => scrollToSection('videos')}
+                className="relative hover:text-pink-600 transition-colors duration-300 group"
+              >
+                🎥 Videos
                 <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-gradient-to-r from-pink-400 to-orange-400 transition-all duration-300 group-hover:w-full"></span>
               </button>
             </li>
@@ -178,6 +187,13 @@ function Header() {
             >
               {t("header.services")}
             </button>
+            {/* ← ADĂUGAT: Videos în Mobile Menu */}
+            <button
+              onClick={() => scrollToSection('videos')}
+              className="w-full text-left text-lg font-medium text-gray-800 hover:text-pink-600 transition-colors py-3 border-b border-gray-100"
+            >
+              🎥 Videos
+            </button>
             <button
               onClick={() => scrollToSection('contact')}
               className="w-full text-left text-lg font-medium text-gray-800 hover:text-pink-600 transition-colors py-3 border-b border-gray-100"
@@ -192,7 +208,7 @@ function Header() {
             <LanguageSelector />
           </div>
 
-    {/* Social Links */}
+          {/* Social Links */}
           <div className="mb-8">
             <p className="text-sm text-gray-600 mb-3">{t("header.followUs") || "Urmărește-ne"}</p>
             <div className="flex gap-4">

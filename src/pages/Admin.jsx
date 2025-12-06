@@ -2,20 +2,19 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import AdminLogin from '../components/AdminLogin';
 import AdminDashboard from '../components/AdminDashboard';
-import AdminVideos from '../components/AdminVideos'; 
+import AdminVideos from '../components/AdminVideos';
 
 function Admin() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('packages'); // ← ADĂUGAT
 
   useEffect(() => {
-    // Check dacă user-ul e deja logat
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       setLoading(false);
     });
 
-    // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
     });
@@ -40,7 +39,77 @@ function Admin() {
     return <AdminLogin onLoginSuccess={setUser} />;
   }
 
-  return <AdminDashboard user={user} onLogout={handleLogout} />;
+  // ← DE AICI ÎNCEPE NOUL COD
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header cu Logout */}
+      <div className="bg-white shadow-md sticky top-0 z-50">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-orange-500 rounded-full flex items-center justify-center text-2xl">
+                💝
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-800">Admin Dashboard</h1>
+                <p className="text-sm text-gray-600">{user.email}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              
+              <a  href="/"
+                className="px-4 py-2 text-gray-600 hover:text-pink-600 transition-colors"
+              >
+                🏠 Acasă
+              </a>
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all"
+              >
+                🚪 Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Tab-uri pentru Pachete și Videoclipuri */}
+      <div className="container mx-auto px-6 py-8">
+        <div className="flex gap-4 mb-8 flex-wrap">
+          <button
+            onClick={() => setActiveTab('packages')}
+            className={`px-6 py-3 rounded-lg font-medium transition-all transform hover:scale-105 ${
+              activeTab === 'packages'
+                ? 'bg-gradient-to-r from-pink-500 to-orange-500 text-white shadow-lg'
+                : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+            }`}
+          >
+            📦 Pachete Consultații
+          </button>
+          <button
+            onClick={() => setActiveTab('videos')}
+            className={`px-6 py-3 rounded-lg font-medium transition-all transform hover:scale-105 ${
+              activeTab === 'videos'
+                ? 'bg-gradient-to-r from-pink-500 to-orange-500 text-white shadow-lg'
+                : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+            }`}
+          >
+            🎥 Videoclipuri
+          </button>
+        </div>
+
+        {/* Conținut bazat pe tab-ul activ */}
+        <div className="bg-white rounded-xl shadow-lg p-6">
+          {activeTab === 'packages' && (
+            <AdminDashboard user={user} onLogout={handleLogout} />
+          )}
+          {activeTab === 'videos' && (
+            <AdminVideos />
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default Admin;
