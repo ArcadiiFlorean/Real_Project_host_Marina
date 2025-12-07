@@ -1,102 +1,114 @@
-import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
-import Stripe from 'https://esm.sh/stripe@14.0.0?target=deno'
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import Stripe from "https://esm.sh/stripe@14.21.0";
 
-const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
-  apiVersion: '2023-10-16',
-})
+const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") as string, {
+  apiVersion: "2024-11-20.acacia",
+  httpClient: Stripe.createFetchHttpClient(),
+});
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-}
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+};
 
 serve(async (req) => {
-  if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+  if (req.method === "OPTIONS") {
+    return new Response("ok", { headers: corsHeaders, status: 200 });
   }
 
   try {
-    const { packageId, packageName, packageDescription, packagePrice } = await req.json()
+    const body = await req.json();
+    console.log("📦 Received body:", JSON.stringify(body));
 
-    // Initialize Supabase client - HARDCODED (anon key e safe să fie public)
-    const supabaseClient = createClient(
-      'https://sgmbuwgtfyefupdyoehw.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNnbWJ1d2d0ZnllZnVwZHlvZWh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3ODk1MjAsImV4cCI6MjA4MDM2NTUyMH0.wdc5pKuyxukWWGCiAcyb_X7dc3K0-MHMaQReQ67tAZk',
-    )
+    const { packageName, packageDescription, amount, orderId } = body;
 
-    const origin = req.headers.get('origin') || 'http://localhost:5176'
+    console.log("💰 Raw amount:", amount, "Type:", typeof amount);
 
-    console.log('Creating checkout session for:', packageName, packagePrice)
+    // Conversie explicită și validare
+    let numericAmount: number;
 
-    // Creează Stripe Checkout Session
-   const session = await stripe.checkout.sessions.create({
-  payment_method_types: ['card'],
-  line_items: [
-    {
-      price_data: {
-        currency: 'gbp',
+    if (typeof amount === "string") {
+      numericAmount = parseFloat(amount);
+    } else if (typeof amount === "number") {
+      numericAmount = amount;
+    } else {
+      throw new Error(
+        `Invalid amount type: ${typeof amount}, value: ${amount}`
+      );
+    }
+
+    console.log("💰 Numeric amount:", numericAmount);
+
+    if (isNaN(numericAmount) || numericAmount <= 0) {
+      throw new Error(`Invalid numeric amount: ${numericAmount}`);
+    }
+
+    const amountInPence = Math.round(numericAmount * 100);
+    console.log("💷 Amount in pence:", amountInPence);
+
+    if (isNaN(amountInPence)) {
+      throw new Error(
+        `NaN in pence calculation: ${numericAmount} * 100 = ${amountInPence}`
+      );
+    }
+
+    console.log("🏗️ Creating Stripe session with:", {
+      packageName,
+      amountInPence,
+      orderId,
+    });
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: [
+        {
+          price_data: {
+            currency: "gbp",
             product_data: {
               name: packageName,
-              description: packageDescription,
+              description: packageDescription || "Consultație lactație",
             },
-            unit_amount: Math.round(packagePrice * 100),
+            unit_amount: amountInPence,
           },
           quantity: 1,
         },
       ],
-      mode: 'payment',
-      success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/?canceled=true`,
+      mode: "payment",
+      success_url: `${req.headers.get("origin")}/booking?order_id=${orderId}`,
+      cancel_url: `${req.headers.get("origin")}/#servicii`,
       metadata: {
-        package_id: packageId,
-        package_name: packageName,
+        order_id: orderId,
       },
-    })
+    });
 
-    console.log('Session created:', session.id)
+    console.log("✅ Checkout session created:", session.id);
 
-    // Salvează comanda în Supabase (status: pending)
-const { data: order, error: orderError } = await supabaseClient
-  .from('orders')
-  .insert({
-    stripe_session_id: session.id,
-    package_id: packageId || null,
-    package_name: packageName,
-    package_description: packageDescription,
-    amount: packagePrice,
-    currency: 'gbp',
-        customer_email: 'pending@checkout.com', // Va fi actualizat după plată
-        payment_status: 'pending',
-        metadata: {
-          session_url: session.url,
-        },
-      })
-      .select()
-      .single()
-
-    if (orderError) {
-      console.error('Error creating order:', orderError)
-      // Nu oprim procesul dacă salvarea eșuează
-    } else {
-      console.log('Order created:', order.id)
-    }
-
+    // ⭐ MODIFICARE AICI - Adaugă URL-ul
     return new Response(
-      JSON.stringify({ url: session.url }),
+      JSON.stringify({
+        sessionId: session.id,
+        url: session.url, // ⭐ ADAUGĂ ACEST RÂND
+      }),
       {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 200,
-      },
-    )
+      }
+    );
   } catch (error) {
-    console.error('Error:', error)
+    console.error("❌ Error:", error.message);
+    console.error("❌ Stack:", error.stack);
+
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({
+        error: error.message || "Failed to create checkout session",
+        details: error.stack,
+      }),
       {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 400,
-      },
-    )
+      }
+    );
   }
-})
+});

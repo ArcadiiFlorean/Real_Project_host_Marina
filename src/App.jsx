@@ -6,6 +6,7 @@ import Hero3D from "./components/Hero3D";
 import Admin from "./pages/Admin"; // ← SCHIMBAT aici!
 import Success from './pages/Success';
 import AdminOrders from './pages/AdminOrders';
+import Booking from './pages/Booking';
 
 // Lazy loading pentru componente grele
 const Services = lazy(() => import("./components/Services"));
@@ -47,6 +48,7 @@ function App() {
 
         <Route path="/admin" element={<Admin />} />
         <Route path="/success" element={<Success />} />
+           <Route path="/booking" element={<Booking />} />
         <Route path="/admin/orders" element={<AdminOrders />} />
       </Routes>
     </Router>

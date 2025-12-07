@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { ShieldCheck } from 'lucide-react';
 import {
   motion,
   useInView,
@@ -92,7 +93,9 @@ function AboutMe() {
               className="absolute -top-4 -right-4 bg-gradient-to-br from-pink-500 to-orange-500 text-white px-4 py-3 rounded-xl shadow-xl z-10"
             >
               <div className="text-center">
-                <div className="text-2xl mb-1">💝</div>
+              <div className="mb-1 flex justify-center">
+  <ShieldCheck className="w-8 h-8" strokeWidth={2.5} />
+</div>
                 <p className="text-xs font-bold">Marina Cociug</p>
                 <p className="text-[10px] opacity-90">IBCLC Certified</p>
               </div>
