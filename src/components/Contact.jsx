@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { motion } from "framer-motion";
 
+
 function Contact() {
   const { t } = useTranslation();
   const [formData, setFormData] = useState({

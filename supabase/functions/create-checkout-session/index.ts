@@ -76,7 +76,7 @@ serve(async (req) => {
         },
       ],
       mode: "payment",
-      success_url: `${req.headers.get("origin")}/booking?order_id=${orderId}`,
+success_url: `${req.headers.get("origin")}/success?order_id=${orderId}`,
       cancel_url: `${req.headers.get("origin")}/#servicii`,
       metadata: {
         order_id: orderId,

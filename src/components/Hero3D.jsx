@@ -212,21 +212,25 @@ function Hero3D() {
               variants={itemVariants}
               className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 pt-4 justify-center lg:justify-start"
             >
-              <motion.button
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                className="group bg-gradient-to-r from-orange-400 to-orange-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-2 font-semibold text-sm sm:text-base relative overflow-hidden w-full sm:w-auto"
-              >
-                <span className="relative z-10">{t("hero.bookConsultation")}</span>
-                <motion.span
-                  animate={{ x: [0, 5, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                  className="relative z-10 text-lg"
-                >
-                  →
-                </motion.span>
-                <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-orange-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              </motion.button>
+         <motion.button
+  whileHover={{ scale: 1.05, y: -5 }}
+  whileTap={{ scale: 0.95 }}
+  onClick={() => {
+    const servicesSection = document.getElementById('servicii');
+    servicesSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }}
+  className="group bg-gradient-to-r from-orange-400 to-orange-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-2 font-semibold text-sm sm:text-base relative overflow-hidden w-full sm:w-auto"
+>
+  <span className="relative z-10">{t("hero.bookConsultation")}</span>
+  <motion.span
+    animate={{ x: [0, 5, 0] }}
+    transition={{ duration: 1.5, repeat: Infinity }}
+    className="relative z-10 text-lg"
+  >
+    →
+  </motion.span>
+  <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-orange-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+</motion.button>
 
               <motion.button
                 whileHover={{ scale: 1.05 }}

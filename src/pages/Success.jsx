@@ -13,80 +13,90 @@ function Success() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!orderId) {
-      setError('Order ID lipsește');
-      setLoading(false);
-      return;
-    }
+  if (!orderId) {
+    setError('Order ID lipsește');
+    setLoading(false);
+    return;
+  }
 
-    let attempts = 0;
-    const maxAttempts = 15; // 30 secunde total (15 × 2s)
+  console.log('🔍 Success page - Looking for order:', orderId); // ⭐ ADAUGĂ
 
-    const checkPaymentStatus = async () => {
-      try {
-        // Verifică statusul plății în orders
-        const { data: order, error: orderError } = await supabase
-          .from('orders')
-          .select('payment_status')
-          .eq('id', orderId)
+  let attempts = 0;
+  const maxAttempts = 30; // Mărește la 60 secunde
+
+  const checkPaymentStatus = async () => {
+    try {
+      console.log(`🔍 Attempt ${attempts + 1} - Checking order:`, orderId); // ⭐ ADAUGĂ
+
+      // Verifică statusul plății în orders
+      const { data: order, error: orderError } = await supabase
+        .from('orders')
+        .select('*') // ⭐ Selectează TOT pentru debugging
+        .eq('id', orderId)
+        .single();
+
+      if (orderError) {
+        console.error('❌ Error fetching order:', orderError); // ⭐ ADAUGĂ
+        throw orderError;
+      }
+
+      console.log(`📊 Attempt ${attempts + 1}: payment_status =`, order.payment_status, '| Full order:', order); // ⭐ MODIFICAT
+
+      if (order.payment_status === 'paid') {
+        console.log('✅ PAYMENT CONFIRMED! Loading booking details...'); // ⭐ ADAUGĂ
+
+        // Plata confirmată! Încarcă detaliile booking-ului
+        const { data: bookingData, error: bookingError } = await supabase
+          .from('bookings')
+          .select(`
+            *,
+            slot:availability_slots(*),
+            order:orders(*)
+          `)
+          .eq('order_id', orderId)
           .single();
 
-        if (orderError) throw orderError;
+        if (bookingError) throw bookingError;
 
-        console.log(`Attempt ${attempts + 1}: payment_status =`, order.payment_status);
+        // Update booking status la 'confirmed'
+        await supabase
+          .from('bookings')
+          .update({ status: 'confirmed' })
+          .eq('id', bookingData.id);
 
-        if (order.payment_status === 'paid') {
-          // Plata confirmată! Încarcă detaliile booking-ului
-          const { data: bookingData, error: bookingError } = await supabase
-            .from('bookings')
-            .select(`
-              *,
-              slot:availability_slots(*),
-              order:orders(*)
-            `)
-            .eq('order_id', orderId)
-            .single();
-
-          if (bookingError) throw bookingError;
-
-          // Update booking status la 'confirmed'
-          await supabase
-            .from('bookings')
-            .update({ status: 'confirmed' })
-            .eq('id', bookingData.id);
-
-          setBooking(bookingData);
-          setPaymentConfirmed(true);
-          setLoading(false);
-          clearInterval(intervalId);
-          
-          // Curăță localStorage
-          localStorage.removeItem('selectedPackage');
-          localStorage.removeItem('pendingOrderId');
-        }
-
-        attempts++;
-        if (attempts >= maxAttempts) {
-          clearInterval(intervalId);
-          setError('Verificarea plății a expirat. Te rugăm să contactezi suportul.');
-          setLoading(false);
-        }
-      } catch (err) {
-        console.error('Error checking payment:', err);
-        setError(err.message);
+        setBooking(bookingData);
+        setPaymentConfirmed(true);
         setLoading(false);
         clearInterval(intervalId);
+        
+        // Curăță localStorage
+        localStorage.removeItem('selectedPackage');
+        localStorage.removeItem('pendingOrderId');
       }
-    };
 
-    // Check imediat
-    checkPaymentStatus();
+      attempts++;
+      if (attempts >= maxAttempts) {
+        console.error('❌ TIMEOUT after', attempts, 'attempts'); // ⭐ ADAUGĂ
+        clearInterval(intervalId);
+        setError('Verificarea plății a expirat. Te rugăm să contactezi suportul.');
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error('❌ Error checking payment:', err);
+      setError(err.message);
+      setLoading(false);
+      clearInterval(intervalId);
+    }
+  };
 
-    // Apoi check la fiecare 2 secunde
-    const intervalId = setInterval(checkPaymentStatus, 2000);
+  // Check imediat
+  checkPaymentStatus();
 
-    return () => clearInterval(intervalId);
-  }, [orderId]);
+  // Apoi check la fiecare 2 secunde
+  const intervalId = setInterval(checkPaymentStatus, 2000);
+
+  return () => clearInterval(intervalId);
+}, [orderId]);
 
   // Error state
   if (error) {
