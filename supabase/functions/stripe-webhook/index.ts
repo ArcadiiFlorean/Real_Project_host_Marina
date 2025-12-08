@@ -45,9 +45,10 @@ serve(async (req) => {
       )
     }
 
+    // ⭐ MODIFICARE CRITICĂ AICI - Folosește SERVICE ROLE KEY!
     const supabaseClient = createClient(
-      'https://sgmbuwgtfyefupdyoehw.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNnbWJ1d2d0ZnllZnVwZHlvZWh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3ODk1MjAsImV4cCI6MjA4MDM2NTUyMH0.wdc5pKuyxukWWGCiAcyb_X7dc3K0-MHMaQReQ67tAZk',
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
     )
 
     console.log('Event type:', event.type)

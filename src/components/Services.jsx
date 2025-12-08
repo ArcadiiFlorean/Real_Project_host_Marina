@@ -2,7 +2,6 @@ import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
 import { motion } from "framer-motion";
-import { createCheckoutSession } from "../lib/stripe";
 import { Heart } from "lucide-react";
 
 function Services() {
@@ -35,26 +34,29 @@ function Services() {
     return pkg[`${field}_${lang}`] || pkg[`${field}_ro`];
   };
 
-  const handleBooking = async (pkg) => {
+  // ⭐ MODIFICARE AICI - În loc să meargă direct la Stripe, mergem la Booking
+  const handleBooking = (pkg) => {
     try {
-      console.log("📦 Package from DB:", pkg);
-      console.log("💰 Price from DB:", pkg.price, "Type:", typeof pkg.price);
+      console.log("📦 Selected package:", pkg);
 
+      // Pregătește datele pachetului
       const packageData = {
         id: pkg.id,
         name: getLocalizedContent(pkg, "name"),
         description: getLocalizedContent(pkg, "description"),
-        price: parseFloat(pkg.price) || 0, // ⭐ CONVERSIE AICI
+        price: parseFloat(pkg.price) || 0,
+        duration_minutes: pkg.duration_minutes,
+        features: getLocalizedContent(pkg, "features")
       };
 
-      console.log(
-        "💰 Price after parse:",
-        packageData.price,
-        "Type:",
-        typeof packageData.price
-      );
+      console.log("💾 Saving to localStorage:", packageData);
 
-      await createCheckoutSession(packageData);
+      // Salvează pachetul în localStorage
+      localStorage.setItem('selectedPackage', JSON.stringify(packageData));
+
+      // Navighează la booking pentru a alege data și ora
+      window.location.href = '/booking';
+      
     } catch (error) {
       console.error("Error:", error);
       alert("A apărut o eroare. Te rugăm să încerci din nou.");

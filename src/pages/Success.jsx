@@ -5,45 +5,150 @@ import { motion } from 'framer-motion';
 
 function Success() {
   const [searchParams] = useSearchParams();
-  const bookingId = searchParams.get('booking_id');
+  const orderId = searchParams.get('order_id');
+  
+  const [paymentConfirmed, setPaymentConfirmed] = useState(false);
   const [booking, setBooking] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (bookingId) {
-      fetchBooking();
-    }
-  }, [bookingId]);
-
-  const fetchBooking = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('bookings')
-        .select(`
-          *,
-          slot:availability_slots(*),
-          order:orders(*)
-        `)
-        .eq('id', bookingId)
-        .single();
-
-      if (error) throw error;
-      setBooking(data);
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
+    if (!orderId) {
+      setError('Order ID lipsește');
       setLoading(false);
+      return;
     }
-  };
 
-  if (loading) {
+    let attempts = 0;
+    const maxAttempts = 15; // 30 secunde total (15 × 2s)
+
+    const checkPaymentStatus = async () => {
+      try {
+        // Verifică statusul plății în orders
+        const { data: order, error: orderError } = await supabase
+          .from('orders')
+          .select('payment_status')
+          .eq('id', orderId)
+          .single();
+
+        if (orderError) throw orderError;
+
+        console.log(`Attempt ${attempts + 1}: payment_status =`, order.payment_status);
+
+        if (order.payment_status === 'paid') {
+          // Plata confirmată! Încarcă detaliile booking-ului
+          const { data: bookingData, error: bookingError } = await supabase
+            .from('bookings')
+            .select(`
+              *,
+              slot:availability_slots(*),
+              order:orders(*)
+            `)
+            .eq('order_id', orderId)
+            .single();
+
+          if (bookingError) throw bookingError;
+
+          // Update booking status la 'confirmed'
+          await supabase
+            .from('bookings')
+            .update({ status: 'confirmed' })
+            .eq('id', bookingData.id);
+
+          setBooking(bookingData);
+          setPaymentConfirmed(true);
+          setLoading(false);
+          clearInterval(intervalId);
+          
+          // Curăță localStorage
+          localStorage.removeItem('selectedPackage');
+          localStorage.removeItem('pendingOrderId');
+        }
+
+        attempts++;
+        if (attempts >= maxAttempts) {
+          clearInterval(intervalId);
+          setError('Verificarea plății a expirat. Te rugăm să contactezi suportul.');
+          setLoading(false);
+        }
+      } catch (err) {
+        console.error('Error checking payment:', err);
+        setError(err.message);
+        setLoading(false);
+        clearInterval(intervalId);
+      }
+    };
+
+    // Check imediat
+    checkPaymentStatus();
+
+    // Apoi check la fiecare 2 secunde
+    const intervalId = setInterval(checkPaymentStatus, 2000);
+
+    return () => clearInterval(intervalId);
+  }, [orderId]);
+
+  // Error state
+  if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin w-12 h-12 border-4 border-pink-500 border-t-transparent rounded-full"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 via-white to-orange-50 p-6">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="max-w-md w-full bg-white rounded-3xl shadow-2xl p-8 text-center"
+        >
+          <div className="inline-block p-6 bg-red-100 rounded-full mb-6">
+            <svg className="w-16 h-16 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </div>
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">
+            ❌ Eroare
+          </h1>
+          <p className="text-gray-600 mb-6">{error}</p>
+          <Link to="/">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-8 py-3 bg-gradient-to-r from-pink-500 to-orange-500 text-white rounded-2xl font-bold shadow-xl"
+            >
+              🏠 Înapoi la Site
+            </motion.button>
+          </Link>
+        </motion.div>
       </div>
     );
   }
 
+  // Loading / Waiting for payment confirmation
+  if (loading || !paymentConfirmed) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 via-white to-orange-50">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="text-center"
+        >
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            className="w-16 h-16 border-4 border-pink-500 border-t-transparent rounded-full mx-auto mb-6"
+          />
+          <h2 className="text-2xl font-bold text-gray-800 mb-3">
+            Se verifică plata...
+          </h2>
+          <p className="text-gray-600 mb-2">
+            Te rugăm să aștepți câteva secunde
+          </p>
+          <p className="text-sm text-gray-400">
+            Nu închide această pagină
+          </p>
+        </motion.div>
+      </div>
+    );
+  }
+
+  // Success - Payment confirmed!
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-orange-50 flex items-center justify-center p-6">
       <motion.div
