@@ -2,15 +2,14 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Hero3D from "./components/Hero3D";
-// import ParallaxBackground from './components/ParallaxBackground';
-import Admin from "./pages/Admin"; // ← SCHIMBAT aici!
+import AboutMe from "./components/AboutMe";
+import Admin from "./pages/Admin";
 import Success from "./pages/Success";
 import AdminOrders from "./pages/AdminOrders";
 import Booking from "./pages/Booking";
 
 // Lazy loading pentru componente grele
 const Services = lazy(() => import("./components/Services"));
-const AboutMe = lazy(() => import("./components/AboutMe"));
 const VideoPractice = lazy(() => import("./components/VideoPractice"));
 const Contact = lazy(() => import("./components/Contact"));
 const Footer = lazy(() => import("./components/Footer"));
@@ -30,11 +29,9 @@ function App() {
           path="/"
           element={
             <div className="min-h-screen relative">
-              {/* <ParallaxBackground /> */}
               <Header />
               <Hero3D />
 
-              {/* Suspense pentru componente lazy-loaded */}
               <Suspense fallback={<LoadingSpinner />}>
                 <AboutMe />
                 <Services />

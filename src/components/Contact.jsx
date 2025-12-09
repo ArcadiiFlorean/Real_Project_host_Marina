@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { motion } from "framer-motion";
-
+import { supabase } from "../lib/supabase";
 
 function Contact() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -14,6 +14,7 @@ function Contact() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     setFormData({
@@ -25,13 +26,37 @@ function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitStatus(null);
 
-    setTimeout(() => {
+    try {
+      // Apelează Edge Function
+      const { data, error } = await supabase.functions.invoke(
+        "send-contact-email",
+        {
+          body: {
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            subject: formData.subject,
+            message: formData.message,
+            language: i18n.language || "en", // limba curentă
+          },
+        }
+      );
+
+      if (error) throw error;
+
+      // Succes
       setSubmitStatus("success");
-      setIsSubmitting(false);
       setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
-      setTimeout(() => setSubmitStatus(null), 5000);
-    }, 1500);
+      setTimeout(() => setSubmitStatus(null), 8000);
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setSubmitStatus("error");
+      setTimeout(() => setSubmitStatus(null), 8000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const containerVariants = {
@@ -129,14 +154,44 @@ function Contact() {
             <h3 className="text-xl font-bold text-gray-800 mb-5">
               {t("contact.formTitle")}
             </h3>
-
             {submitStatus === "success" && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="mb-5 p-3 bg-green-100 border border-green-300 rounded-xl text-green-700 text-sm"
+                className="mb-5 p-4 bg-green-50 border-2 border-green-300 rounded-xl"
               >
-                ✅ {t("contact.successMessage")}
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl">✅</span>
+                  <div>
+                    <p className="text-green-800 font-semibold mb-1">
+                      {t("contact.successMessage")}
+                    </p>
+                    <p className="text-green-600 text-sm">
+                      You'll receive a confirmation email shortly. I'll respond
+                      within 24 hours!
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+            {submitStatus === "error" && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="mb-5 p-4 bg-red-50 border-2 border-red-300 rounded-xl"
+              >
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl">❌</span>
+                  <div>
+                    <p className="text-red-800 font-semibold mb-1">
+                      Failed to send message
+                    </p>
+                    <p className="text-red-600 text-sm">
+                      {errorMessage ||
+                        "Please try again or contact me directly via email."}
+                    </p>
+                  </div>
+                </div>
               </motion.div>
             )}
 
